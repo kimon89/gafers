@@ -33,6 +33,7 @@ class Registrar implements RegistrarContract {
 			'username' => $data['username'],
 			'email' => $data['email'],
 			'password' => bcrypt($data['password']),
+			'activation_code' => User::generateActivationCode($data['email'])
 		]);
 	}
 

@@ -23,7 +23,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['username', 'email', 'password'];
+	protected $fillable = ['username', 'email', 'password','activation_code'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -31,5 +31,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @var array
 	 */
 	protected $hidden = ['password', 'remember_token'];
+
+
+	public function verify() 
+	{
+		
+	}
+	
+	/**
+	 * Generates the activation code that will be used to
+	 * verify a users email address. The activation code is an 
+	 * md5 of the uniqid method with the email of the user as a prefix
+	 * @param  string $email The email of the user
+	 * @return string        An md5 hash
+	 */
+	public static function generateActivationCode($email) 
+	{
+		return md5(uniqid($email));
+	}
 
 }

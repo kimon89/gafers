@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers;
 
+use \Auth as Auth;
+
 class HomeController extends Controller {
 
 	/*
