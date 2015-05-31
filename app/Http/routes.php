@@ -12,6 +12,9 @@
 */
 
 Route::get('/', 'HomeController@index');
+Route::get('provider-callback/{provider}', 'Auth\AuthController@handleProviderCallback');
+Route::get('provider-login/{provider}', 'Auth\AuthController@redirectToProvider');
+Route::get('email-validation', ['as' => 'email-validation','uses' => 'HomeController@index']);
 
 
 Route::controllers([

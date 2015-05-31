@@ -4,6 +4,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Socialize;
+use Request;
 
 class AuthController extends Controller {
 
@@ -38,5 +40,27 @@ class AuthController extends Controller {
 
 		$this->middleware('guest', ['except' => 'getLogout']);
 	}
+    
+    /**
+     * 
+     * @param type $provider
+     * @return type
+     */
+    public function redirectToProvider($provider)
+    {
+        return Socialize::with($provider)->redirect();
+    }
+
+    /**
+     * Provider callback
+     * @param type $provider
+     */
+    public function handleProviderCallback($provider)
+    {
+        //get user data from the provider
+        $user = Socialize::with($provider)->user();
+        //now register the user if not registered already
+      
+    }
 
 }

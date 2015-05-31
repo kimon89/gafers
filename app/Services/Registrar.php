@@ -4,6 +4,7 @@ use App\User;
 use Validator;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 use App\Commands\SendEmail;
+use Mail;
 
 class Registrar implements RegistrarContract {
 
@@ -43,7 +44,7 @@ class Registrar implements RegistrarContract {
 		// \Log::info(var_export($res,true));
 		// 
 			
-		\Mail::queueOn('email_validations','emails.account_activation', array('a'=>1), function($message) use($data)
+		Mail::queueOn('email_validations','emails.account_activation', array('activation_code'=>$activation_code), function($message) use($data)
 		{
 			$message->from('no-reply@gafers.com','Gafers');
 		    $message->to($data['email'], $data['username'])->subject('Welcome!');
