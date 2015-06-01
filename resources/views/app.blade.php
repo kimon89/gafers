@@ -10,6 +10,8 @@
 
 	<!-- Fonts -->
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{ asset('/css/bootstrap-social.css') }}">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -19,7 +21,7 @@
 	<![endif]-->
 </head>
 <body>
-	<nav class="navbar navbar-default">
+	<nav class="navbar navbar-inverse">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -52,7 +54,15 @@
 			</div>
 		</div>
 	</nav>
+	@if ( !Auth::guest() && !Auth::user()->active )
+		<div class="alert alert-warning">
+	        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			Hello, Please verify your email address. If you haven't recieved a verification email we can <a href="/resend-validation">resend</a>  it to you.
+    	</div>
+	@endif
 
+	@include('flash::message')
+	
 	@yield('content')
 
 	<!-- Scripts -->

@@ -137,6 +137,8 @@ return [
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Html\HtmlServiceProvider',
         'FintechFab\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider',
+        'Laracasts\Flash\FlashServiceProvider',
+        'Laravel\Socialite\SocialiteServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -196,6 +198,7 @@ return [
 		'View'      => 'Illuminate\Support\Facades\View',
         'Socialize' => 'Laravel\Socialite\Facades\Socialite',
         'HTML'      => 'Illuminate\Html\HtmlFacade',
+        'Flash' => 'Laracasts\Flash\Flash'
 
 	],
 
