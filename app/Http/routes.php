@@ -16,6 +16,11 @@ Route::get('provider-callback/{provider}', 'Auth\AuthController@handleProviderCa
 Route::get('provider-login/{provider}', 'Auth\AuthController@redirectToProvider');
 Route::get('email-validation/{activation_code}', ['as' => 'email-validation','uses' => 'Auth\EmailVerificationController@emailValidation']);
 Route::get('resend-validation', ['as' => 'resend-validation','uses' => 'Auth\EmailVerificationController@resendValidationEmail','middleware'=>'auth']);
+Route::get('user/account', ['uses' => 'UserController@account','middleware'=>'auth']);
+Route::get('user/account/{username}', ['uses' => 'UserController@account']);
+Route::get('user/settings', ['uses' => 'UserController@settings','middleware'=>'auth']);
+Route::get('post/create', ['uses' => 'PostController@create','middleware'=>'auth']);
+Route::post('post/create', ['uses' => 'PostController@createProcess','middleware'=>'auth']);
 
 
 Route::controllers([

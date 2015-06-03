@@ -32,11 +32,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $hidden = ['password', 'remember_token'];
 
-
-	public function verify() 
-	{
-		
-	}
 	
 	/**
 	 * Generates the activation code that will be used to
@@ -48,6 +43,24 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	public static function generateActivationCode($email) 
 	{
 		return md5(uniqid($email));
+	}
+
+	/**
+	 * Define relationship with posts
+	 * @return [type] [description]
+	 */
+	public function post()
+	{
+		$this->hasMany('App\Post');
+	}
+
+	/**
+	 * Define relationship with comments
+	 * @return [type] [description]
+	 */
+	public function comment()
+	{
+		$this->hasMany('App\Comment');
 	}
 
 }

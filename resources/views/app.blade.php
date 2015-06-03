@@ -19,9 +19,25 @@
 		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
+	<script type="text/javascript">
+		//ugly fix
+		if (window.location.hash == '#_=_'){
+		    // Check if the browser supports history.replaceState.
+		    if (history.replaceState) {
+		        // Keep the exact URL up to the hash.
+		        var cleanHref = window.location.href.split('#')[0];
+		        // Replace the URL in the address bar without messing with the back button.
+		        history.replaceState(null, null, cleanHref);
+		    } else {
+		        // Well, you're on an old browser, we can get rid of the _=_ but not the #.
+		        window.location.hash = '';
+		    }
+		}
+</script>
+
 </head>
 <body>
-	<nav class="navbar navbar-inverse">
+	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -30,7 +46,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Gafers</a>
+				<a class="navbar-brand" href="/">Gafers</a>
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -46,27 +62,35 @@
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->username }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
+								<li><a href="{{ url('/user/account') }}">My Account</a></li>
+								<li><a href="{{ url('/user/settings') }}">Settings</a></li>
 								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
 							</ul>
+						</li>
+						<li>
+							<a class="btn btn-info create-button" href="{{ url('/post/create') }}">Post</a>
 						</li>
 					@endif
 				</ul>
 			</div>
 		</div>
 	</nav>
-	@if ( !Auth::guest() && !Auth::user()->active )
-		<div class="alert alert-warning">
-	        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-			Hello, Please verify your email address. If you haven't recieved a verification email we can <a href="/resend-validation">resend</a>  it to you.
-    	</div>
-	@endif
 
-	@include('flash::message')
-	
-	@yield('content')
+	<div class="container main">
+		@if ( !Auth::guest() && !Auth::user()->active )
+			<div class="alert alert-warning">
+		        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+				Hello, Please verify your email address. If you haven't recieved a verification email we can <a href="/resend-validation">resend</a>  it to you.
+	    	</div>
+		@endif
+		
+		@include('flash::message')
+		
+		@yield('content')
+	</div>
 
 	<!-- Scripts -->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-</body>
+	</body>
 </html>

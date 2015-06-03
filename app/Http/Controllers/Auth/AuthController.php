@@ -9,6 +9,7 @@ use Request;
 use App\User;
 use Auth;
 use Session;
+use Redirect;
 
 class AuthController extends Controller {
 
@@ -95,7 +96,7 @@ class AuthController extends Controller {
 	       	//if all is good login the user and redirect him 
 	       	if ($user) {
 	        	Auth::login($user);
-	       		return redirect()->back();
+	       		return Redirect::intended('/');
 	       	} else {
 	       		echo 'something went wrong';
 	       	}
