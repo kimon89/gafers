@@ -51,7 +51,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function post()
 	{
-		$this->hasMany('App\Post');
+		return $this->hasMany('App\Post');
 	}
 
 	/**
@@ -60,7 +60,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function comment()
 	{
-		$this->hasMany('App\Comment');
+		return $this->hasMany('App\Comment');
 	}
 
 }

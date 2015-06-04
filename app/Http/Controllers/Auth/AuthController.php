@@ -77,8 +77,8 @@ class AuthController extends Controller {
 					'username' => $username,
 					'email' => $user_from_facebook->email,
 					'password' => bcrypt(md5($username.'X'.rand())),
-					'activation_code' => '',
-					'active'	=> 1,
+					'activation_code' => User::generateActivationCode($user_from_facebook->email),
+					'active'	=> 0,
 					'facebook_id'	=> $user_from_facebook->id
 				]);
 	       	} else {

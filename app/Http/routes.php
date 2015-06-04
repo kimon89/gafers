@@ -21,6 +21,7 @@ Route::get('user/account/{username}', ['uses' => 'UserController@account']);
 Route::get('user/settings', ['uses' => 'UserController@settings','middleware'=>'auth']);
 Route::get('post/create', ['uses' => 'PostController@create','middleware'=>'auth']);
 Route::post('post/create', ['uses' => 'PostController@createProcess','middleware'=>'auth']);
+Route::get('post/gamesearch', ['uses' => 'PostController@gameSearch','middleware'=>'auth']);
 
 
 Route::controllers([

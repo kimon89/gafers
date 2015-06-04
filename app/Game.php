@@ -6,7 +6,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class Post extends Model implements AuthenticatableContract, CanResetPasswordContract {
+class Game extends Model implements AuthenticatableContract, CanResetPasswordContract {
 
 	use Authenticatable, CanResetPassword;
 
@@ -16,32 +16,23 @@ class Post extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var string
 	 */
-	protected $table = 'posts';
+	protected $table = 'games';
 
 	/**
 	 * The attributes that are mass assignable.
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['user_id','title'];
+	protected $fillable = ['name'];
+
 
 	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
+	 * Define relationship with posts
+	 * @return [type] [description]
 	 */
-	protected $hidden = [];
-
-	public function user()
+	public function posts()
 	{
-		return $this->belongsTo('App\User');
+		return $this->belongsToMany('App\Post');
 	}
-
-	public function game()
-	{
-		return $this->belongsToMany('App\Game');
-	}
-
-
 
 }

@@ -13,7 +13,8 @@ class CreatePostRequest extends Request {
 	 */
 	public function authorize()
 	{
-		return User::where('id', Auth::user()->id)->where('active', 1)->exists();
+		//return User::where('id', Auth::user()->id)->where('active', 1)->exists();
+		return true;
 	}
 
 	/**
@@ -39,12 +40,6 @@ class CreatePostRequest extends Request {
        return $this->redirector->back();
     }
 
-    public function response(array $errors)
-    {
-        // If you want to customize what happens on a failed validation,
-        // override this method.
-        // See what it does natively here: 
-        // https://github.com/laravel/framework/blob/master/src/Illuminate/Foundation/Http/FormRequest.php
-    }
+   
 
 }
