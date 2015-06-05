@@ -21,14 +21,23 @@ $final_titles = scrap('1');
 foreach(range('a','z') as $letter) {
 	$final_titles = array_merge($final_titles,scrap($letter));
 }
+file_put_contents('public/gamedata.json',json_encode($final_titles));
+exit;
+
+$aliases = [
+	'gta' => 'grand theft auto',
+	'lol' => 'league of legends'
+];
+
 
  $main_obj = new StdClass();
  $main_obj->suggestions = [];
 
  foreach ($final_titles as $k => $title) {
 	$game = new StdClass();
-	$game->data = $k;
+	//$game->data = '';
 	$game->value = $title;
-	 $main_obj->suggestions[] = $game;
+	$main_obj->suggestions[] = $game;
  }
+ $main_obj->aliases = $aliases;
 file_put_contents('public/gamedata.json',json_encode($main_obj));

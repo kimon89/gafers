@@ -48,6 +48,12 @@
 								<input type="text" class="form-control" id="game-autocomplete" name="game" value="{{ old('game') }}" >
 							</div>
 						</div>
+						<div class="form-group">
+							<label class="col-md-4 control-label"></label>
+							<div class="col-md-6">
+								<span id="game-holder"></span>
+							</div>
+						</div>
 			       		<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary" >

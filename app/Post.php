@@ -32,14 +32,22 @@ class Post extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	protected $hidden = [];
 
+	/**
+	 * Define post user relationship
+	 * @return [type] [description]
+	 */
 	public function user()
 	{
 		return $this->belongsTo('App\User');
 	}
 
+	/**
+	 * Define post game relationship
+	 * @return [type] [description]
+	 */
 	public function game()
 	{
-		return $this->belongsToMany('App\Game');
+		return $this->hasMany('App\Game');
 	}
 
 
