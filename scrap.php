@@ -22,13 +22,13 @@ foreach(range('a','z') as $letter) {
 	$final_titles = array_merge($final_titles,scrap($letter));
 }
 
-// $main_obj = new StdClass();
-// $main_obj->suggestions = [];
-$fdata = [];
+ $main_obj = new StdClass();
+ $main_obj->suggestions = [];
+
  foreach ($final_titles as $k => $title) {
 	$game = new StdClass();
-	$game->id = $k;
-	$game->name = $title;
-	$fdata[] = $game;
+	$game->data = $k;
+	$game->value = $title;
+	 $main_obj->suggestions[] = $game;
  }
-file_put_contents('gamedata.json',json_encode($fdata));
+file_put_contents('public/gamedata.json',json_encode($main_obj));
