@@ -518,6 +518,18 @@
                     return filter(suggestion, query, queryLowerCase);
                 })
             };
+            
+            data.suggestions.sort(function(a,b){
+                var a = a.value;
+                var b = b.value;
+                if (a.indexOf(queryLowerCase) === b.indexOf(queryLowerCase)){
+                    return 0;
+                } else if(a.indexOf(queryLowerCase) > b.indexOf(queryLowerCase)){
+                    return 1;
+                } else {
+                    return -1;
+                }
+            });
 
             if (limit && data.suggestions.length > limit) {
                 data.suggestions = data.suggestions.slice(0, limit);
