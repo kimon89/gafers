@@ -10,8 +10,7 @@ $(function(){
           }
           return hash;
     };
-
-
+    
     var FormManager = {
         form_el:null,
         file_type_el:null,
@@ -46,7 +45,34 @@ $(function(){
         submitContent:function(track_key, callback){
 
             if(FormManager.file_input_el.attr('type') == 'text') {
+                FormManager.convertFile();
+            } else {
+                var fd = new FormData();
+                fd.append('key',track_key);
+                fd.append('acl','private');
+                fd.append('AWSAccessKeyId','AKIAIT4VU4B7G2LQYKZQ');
+                fd.append('policy','eyAiZXhwaXJhdGlvbiI6ICIyMDIwLTEyLTAxVDEyOjAwOjAwLjAwMFoiLAogICAgICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICAgICAgeyJidWNrZXQiOiAiZ2lmYWZmZSJ9LAogICAgICAgICAgICBbInN0YXJ0cy13aXRoIiwgIiRrZXkiLCAiIl0sCiAgICAgICAgICAgIHsiYWNsIjogInByaXZhdGUifSwKCSAgICB7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6ICIyMDAifSwKICAgICAgICAgICAgWyJzdGFydHMtd2l0aCIsICIkQ29udGVudC1UeXBlIiwgIiJdLAogICAgICAgICAgICBbImNvbnRlbnQtbGVuZ3RoLXJhbmdlIiwgMCwgNTI0Mjg4MDAwXQogICAgICAgICAgICBdCiAgICAgICAgICB9');
+                fd.append('success_action_status','200');
+                fd.append('signature','mk9t/U/wRN4/uU01mXfeTe2Kcoc=');
+                fd.append('Content-Type','image/gif');
+                fd.append('file',FormManager.file_input_el.val());
+           
                 $.ajax({
+                    url:"https://gifaffe.s3.amazonaws.com/",
+                    data:fd,
+                    method:'POST',
+                    contentType:false,
+                    processData: false,
+                    cache:false,
+                    dataType:'json'
+                }).done(function(data){
+                    callback();
+                });
+            }
+        },
+        convertFile:function(track_key){
+            if (track_key == null) {
+            $.ajax({
                     url:"http://upload.gfycat.com/transcode/",
                     data:{fetchUrl:FormManager.file_input_el.val()},
                     //contentType:'text/plain'
@@ -57,35 +83,9 @@ $(function(){
                         callback(data);
                     }
                 });
-            } else {
-                console.log(FormManager.file_input_el.val());
-                var fd = new FormData();
-                fd.append('key',track_key);
-                fd.append('acl','private');
-                fd.append('AWSAccessKeyId','AKIAIT4VU4B7G2LQYKZQ');
-                fd.append('policy','eyAiZXhwaXJhdGlvbiI6ICIyMDIwLTEyLTAxVDEyOjAwOjAwLjAwMFoiLAogICAgICAgICAgICAiY29uZGl0aW9ucyI6IFsKICAgICAgICAgICAgeyJidWNrZXQiOiAiZ2lmYWZmZSJ9LAogICAgICAgICAgICBbInN0YXJ0cy13aXRoIiwgIiRrZXkiLCAiIl0sCiAgICAgICAgICAgIHsiYWNsIjogInByaXZhdGUifSwKCSAgICB7InN1Y2Nlc3NfYWN0aW9uX3N0YXR1cyI6ICIyMDAifSwKICAgICAgICAgICAgWyJzdGFydHMtd2l0aCIsICIkQ29udGVudC1UeXBlIiwgIiJdLAogICAgICAgICAgICBbImNvbnRlbnQtbGVuZ3RoLXJhbmdlIiwgMCwgNTI0Mjg4MDAwXQogICAgICAgICAgICBdCiAgICAgICAgICB9');
-                fd.append('success_action_status','200');
-                fd.append('signature','mk9t/U/wRN4/uU01mXfeTe2Kcoc=');
-                fd.append('Content-Type','image/gif');
-                fd.append('file',FormManager.file_input_el.val());
-                
-
-                $.ajax({
-                    url:"https://gifaffe.s3.amazonaws.com/",
-                    data:fd,
-                    method:'POST',
-                    contentType:false,
-                    processData: false,
-                    cache:false,
-                    dataType:'json'
-                }).done(function(data){
-                    if(data.isOk == undefined) {
-                        callback(false);
-                    } else {
-                        callback(data);
-                    }
-                });
             }
+        },
+        contentStatus:function(track_key){
         },
         getGamedata:function(callback){
             $.ajax({
