@@ -19,7 +19,7 @@
 						</div>
 					@endif
 
-					<form id="post-form" class="form-horizontal" role="form" method="POST" action="{{ url('/post/create') }}">
+					<form id="post-form" user-id="{{Auth::user()->id}}" class="form-horizontal" role="form" method="POST" action="{{ url('/post/create') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">
@@ -33,12 +33,12 @@
 							<div class="col-lg-6">
 							    <div class="input-group">
 							      <span class="input-group-addon">
-                                      <label for="file_type_text">URL</label>
-							        <input id="file_type_text" type="radio" name="file_type" class="file_type" checked="checked" value="text" aria-label="..." >
-							        <label for="file_type_file">Upload</label>
-							        <input id="file_type_file" type="radio" name="file_type" class="file_type" value="file" aria-label="...">
+                                      <label for="file-type-text">URL</label>
+							        <input id="file-type-text" type="radio" name="file-type" class="file-type" checked="checked" value="text" aria-label="..." >
+							        <label for="file-type-file">Upload</label>
+							        <input id="file-type-file" type="radio" name="file-type" class="file-type" value="file" aria-label="...">
 							      </span>
-							      <input id="file_input" name="file" type="text" class="form-control" aria-label="...">
+							      <input id="file-input" name="file" type="text" class="form-control" aria-label="...">
 							    </div><!-- /input-group -->
 							</div><!-- /.col-lg-6 -->
 						</div>
