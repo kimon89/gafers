@@ -32,7 +32,6 @@ $(function(){
         formData:{
             title:null,
             game_id:null,
-
         },
 
         errors:{
@@ -72,6 +71,12 @@ $(function(){
             
             if (FormManager.file_input_el.attr('type') == 'file') {
                 FormManager.formData.file = FormManager.file_input_el[0].files[0];
+                if (FormManager.formData.file == undefined) {
+                    FormManager.errors.error_count++;
+                    FormManager.errors.error_list.file = 'Please select a gif or video file of max 15 seconds and 300mb size';
+                }
+            } else {
+                FormManager.formData.file = FormManager.file_input_el.val();
             }
 
             if (FormManager.formData.title.length < 5){
