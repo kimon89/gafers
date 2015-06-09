@@ -18,14 +18,13 @@
 							</ul>
 						</div>
 					@endif
-
 					<form id="post-form" user-id="{{Auth::user()->id}}" class="form-horizontal" role="form" method="POST" action="{{ url('/post/create') }}">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+						<input id="token" type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Title</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="title" value="{{ old('title') }}" >
+								<input id="title-input" type="text" class="form-control" name="title" value="{{ old('title') }}" >
 							</div>
 						</div>
 						<div class="form-group">
@@ -46,6 +45,7 @@
 							<label class="col-md-4 control-label">Game</label>
 							<div class="col-md-6">
 								<input type="text" class="form-control" id="game-autocomplete" name="game" value="{{ old('game') }}" >
+								<input type="text" id="game-input" name="game-input">
 							</div>
 						</div>
 						<div class="form-group">
@@ -61,7 +61,15 @@
 								</button>
 							</div>
 						</div>
+						
 					</form>
+					<div class="overlay"></div>
+					<div class="progress">
+						<div class="progress-bar progress-bar-success progress-bar-striped progress-bar-upload" style="width: 0%">
+						</div>
+						<div class="progress-bar progress-bar-warning progress-bar-striped progress-bar-convert" style="width: 0%">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

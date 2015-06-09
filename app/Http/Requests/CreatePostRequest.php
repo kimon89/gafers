@@ -25,8 +25,11 @@ class CreatePostRequest extends Request {
 	public function rules()
 	{
 		 return [
-	        'title' => 'required|max:120',
-	        'game' => 'required',
+	        'title' => 'required|between:5,120',
+	        'game_id' => 'required|exists:games,id',
+	        'gif'	=> 'required|regex:@http:\/\/[a-zA-Z]+\.gfycat\.com\/[a-zA-Z0-9]+\.(?:gif)@',
+	        'mp4'	=> 'required|regex:@http:\/\/[a-zA-Z]+\.gfycat\.com\/[a-zA-Z0-9]+\.(?:mp4)@',
+	        'webm'	=> 'required|regex:@http:\/\/[a-zA-Z]+\.gfycat\.com\/[a-zA-Z0-9]+\.(?:webm)@'
     	];
 	}
 

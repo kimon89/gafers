@@ -18,6 +18,9 @@ class CreatePostsTable extends Migration {
 			$table->integer('user_id');
 			$table->integer('game_id');
 			$table->string('title',120);
+			$table->string('gif');
+			$table->string('mp4');
+			$table->string('webm');
 			$table->timestamps();
 		});
 	}
