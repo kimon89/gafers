@@ -10,6 +10,7 @@ use App\User;
 use Auth;
 use Session;
 use Redirect;
+use App\Http\Requests\LoginRequest;
 
 class AuthController extends Controller {
 
@@ -44,6 +45,32 @@ class AuthController extends Controller {
 
 		$this->middleware('guest', ['except' => 'getLogout']);
 	}
+
+	public function postRegister(){
+		$validator = $this->registrar->validator(Request::all());
+
+		if ($validator->fails()) {
+		    return view('auth/register')->withErrors($validator->errors());
+		}
+
+		return response()->json(["Message" => "Success"]);
+	}
+	
+	public function postLogin(LoginRequest $request)
+	{
+		$input = Request::all();
+		$data = new \stdClass();
+		if (Auth::attempt(['email' => $input['email'], 'password' => $input['password']])){
+			$data->success = true;
+			$data-> user = Auth::user();
+            return response()->json($data);
+        } else {
+        	$data->success = false;
+        	$data->user = null;
+        	return response()->json($data);
+        }
+	}
+
     
     /**
      * 
@@ -62,24 +89,24 @@ class AuthController extends Controller {
     public function handleProviderCallback($provider)
     {
         //get user data from the provider
-        $user_from_facebook = Socialize::with($provider)->user();
+        $user_from_facebook = Request::all();
 
 
         //TODO: should get abstracted somehow for more providers
         if ($provider == 'facebook') {
 	        //check to see if this user already exists using the facebook id
-	       	$users = User::where('facebook_id','=',$user_from_facebook->id);
-	       	$users = $users->count() ? $users : User::where('email','=',$user_from_facebook->email);
+	       	$users = User::where('facebook_id','=',$user_from_facebook['id']);
+	       	$users = $users->count() ? $users : User::where('email','=',$user_from_facebook['email']);
 	       	
 	       	if ($users->count() == 0) {
-	       		$username = (is_null($user_from_facebook->nickname) ? $user_from_facebook->user['first_name'] : $user_from_facebook->nickname) . '_' . uniqid();
+	       		$username = (is_null($user_from_facebook['nickname']) ? $user_from_facebook['first_name'] : $user_from_facebook['nickname']) . '_' . uniqid();
 		        $user = User::create([
 					'username' => $username,
-					'email' => $user_from_facebook->email,
+					'email' => $user_from_facebook['email'],
 					'password' => bcrypt(md5($username.'X'.rand())),
-					'activation_code' => User::generateActivationCode($user_from_facebook->email),
+					'activation_code' => User::generateActivationCode($user_from_facebook['email']),
 					'active'	=> 0,
-					'facebook_id'	=> $user_from_facebook->id
+					'facebook_id'	=> $user_from_facebook['id']
 				]);
 	       	} else {
 	       		//a user with the same email address already exists link them with facebook
@@ -87,7 +114,7 @@ class AuthController extends Controller {
 	       		$users_collection = $users->get();
 	       		foreach ($users_collection as $user_db) {
 	       			if (empty($user_db->facebook_id)) {
-			       		$user_db->facebook_id = $user_from_facebook->id;
+			       		$user_db->facebook_id = $user_from_facebook['id'];
 			       		$user_db->save();
 		       		} 
 		       		$user = $user_db;
@@ -96,7 +123,8 @@ class AuthController extends Controller {
 	       	//if all is good login the user and redirect him 
 	       	if ($user) {
 	        	Auth::login($user);
-	       		return Redirect::intended('/');
+	        	echo json_encode($user);
+	       		//return Redirect::intended('/');
 	       	} else {
 	       		echo 'something went wrong';
 	       	}

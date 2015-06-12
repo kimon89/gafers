@@ -1,6 +1,10 @@
 
 $(function(){
 
+    var base_url = location.href.split( '/' )[2];
+    var hash = location.href.split( '#' )[1];
+
+
     String.prototype.hashCode = function() {
           var hash = 0, i, chr, len;
           if (this.length == 0) return hash;
@@ -10,6 +14,109 @@ $(function(){
             hash |= 0; // Convert to 32bit integer
           }
           return hash;
+    };
+
+    var DOMManager = {
+        elements:{
+            login_form:null,
+            registration_form:null,
+            navigation_bar:null
+        },
+        init:function(user,hash){
+            DOMManager.navigationBar(user);
+            DOMManager.initRouter(hash);
+        },
+        initRouter:function(){
+            $(window).on('hashchange', function(e) {
+                e.stopImmediatePropagation();
+                var target = window.location.hash.substr(1);
+                if (target != '') {
+                    DOMManager[target]();
+                }   
+            });
+            if (hash !== undefined && hash !== '') {
+                DOMManager[hash]();
+            }
+        },
+        navigationBar:function(data){
+            if (DOMManager.elements.navigation_bar != null) {
+                DOMManager.elements.navigation_bar.remove();
+            }
+            var source   = $("#navigation-bar").html();
+            var template = Handlebars.compile(source);
+            var html    = template(data);
+            DOMManager.elements.navigation_bar = $(html);
+            $('.container.main').before(DOMManager.elements.navigation_bar);
+        },
+        login:function(){
+            var source   = $("#login-form-template").html();
+            var template = Handlebars.compile(source);
+            var html    = template();
+            DOMManager.elements.login_form = $(html).modal('show');
+            $(DOMManager.elements.login_form).on('hidden.bs.modal', function (e) {
+                window.location.hash = '';
+            });
+            $(DOMManager.elements.login_form.find('form')).on('submit',function(e){
+                $(this).find('input[name=_token]').val(csrf_token);
+                e.preventDefault();
+                var data = $(this).serialize();
+                DOMManager.loginSubmit(data);
+            });
+        },
+        register:function(){
+            var source   = $("#register-form-template").html();
+            var template = Handlebars.compile(source);
+            var html    = template();
+            DOMManager.elements.registration_form = $(html).modal('show');
+            $(DOMManager.elements.registration_form).on('hidden.bs.modal', function (e) {
+                window.location.hash = '';
+            });
+            $(DOMManager.elements.registration_form.find('form')).on('submit',function(e){
+                $(this).find('input[name=_token]').val(csrf_token);
+                e.preventDefault();
+                var data = $(this).serialize();
+                DOMManager.registerSubmit(data);
+            });
+        },
+        loginSubmit:function(data){
+            $.ajax({
+                url:"https://dev.gafers.com/auth/login",
+                data:data,
+                method:'POST',
+                dataType:'json'
+            }).done(function(data){
+                console.log(data);
+                 //DOMManager.elements.login_form.modal('hide');
+                 //DOMManager.navigationBar(data);
+            });
+        },registerSubmit:function(data){
+            $.ajax({
+                url:"https://dev.gafers.com/auth/register",
+                data:data,
+                method:'POST',
+                dataType:'json'
+            }).done(function(data){
+                console.log(data);
+            });
+        },
+        loginFacebook:function(){
+            FB.login(function(response){
+                FB.api('/me', function(user_data) {
+                    var data = user_data;
+                    data._token = csrf_token;
+                    $.ajax({
+                        url:"https://"+base_url+"/provider-callback/facebook",
+                        data:data,
+                        method:'POST',
+                        dataType:'json'
+                    }).done(function(data){
+                         DOMManager.elements.login_form.modal('hide');
+                         DOMManager.navigationBar(data);
+                    });
+                });
+        }, {scope: 'email,public_profile'});
+        },
+
     };
     
     var FormManager = {
@@ -239,5 +346,8 @@ $(function(){
              FormManager.game_autocomplete_el.autocomplete(options);
         }
     };
+
+    DOMManager.init(user_data,hash);
+
     FormManager.init('#post-form');
 });
