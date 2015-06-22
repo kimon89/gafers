@@ -19,23 +19,23 @@
 							</ul>
 						</div>
 						{{/if}}
-					 <a class="btn btn-block btn-social btn-lg btn-facebook facebook-login" href="#loginFacebook">
+					 <a class="btn btn-block btn-social btn-lg btn-facebook facebook-login" href="/loginFacebook">
 					 	<i class="fa fa-facebook"></i> Sign in with Facebook
 					 </a>
-					<form id="login-form" class="form-horizontal" role="form" method="POST" action="#loginSubmit">
+					<form id="login-form" class="form-horizontal" role="form" method="POST" action="/loginSubmit">
 						<input type="hidden" name="_token" value="{{ csrf_token }}">
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">E-Mail Address</label>
 							<div class="col-md-6">
-								<input type="email" class="form-control" name="email" value="{{ email }}">
+								<input type="email" class="form-control" name="email" required value="{{ email }}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Password</label>
 							<div class="col-md-6">
-								<input type="password" class="form-control" name="password">
+								<input type="password" class="form-control" required name="password">
 							</div>
 						</div>
 

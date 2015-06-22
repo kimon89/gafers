@@ -27,9 +27,9 @@ class CreatePostRequest extends Request {
 		 return [
 	        'title' => 'required|between:5,120',
 	        'game_id' => 'required|exists:games,id',
-	        'gif'	=> 'required|regex:@http:\/\/[a-zA-Z]+\.gfycat\.com\/[a-zA-Z0-9]+\.(?:gif)@',
-	        'mp4'	=> 'required|regex:@http:\/\/[a-zA-Z]+\.gfycat\.com\/[a-zA-Z0-9]+\.(?:mp4)@',
-	        'webm'	=> 'required|regex:@http:\/\/[a-zA-Z]+\.gfycat\.com\/[a-zA-Z0-9]+\.(?:webm)@'
+	        //'gif'	=> 'required|regex:@http:\/\/[a-zA-Z]+\.gfycat\.com\/[a-zA-Z0-9]+\.(?:gif)@',
+	        //'mp4'	=> 'required|regex:@http:\/\/[a-zA-Z]+\.gfycat\.com\/[a-zA-Z0-9]+\.(?:mp4)@',
+	        //'webm'	=> 'required|regex:@http:\/\/[a-zA-Z]+\.gfycat\.com\/[a-zA-Z0-9]+\.(?:webm)@'
     	];
 	}
 

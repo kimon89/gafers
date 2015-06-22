@@ -11,6 +11,8 @@ use Auth;
 use Session;
 use Redirect;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use Mail;
 
 class AuthController extends Controller {
 
@@ -46,29 +48,58 @@ class AuthController extends Controller {
 		$this->middleware('guest', ['except' => 'getLogout']);
 	}
 
-	public function postRegister(){
-		$validator = $this->registrar->validator(Request::all());
 
-		if ($validator->fails()) {
-		    return view('auth/register')->withErrors($validator->errors());
+	public function postRegister(RegisterRequest $request)
+	{
+		$input = Request::all();
+		$activation_code = User::generateActivationCode($input['email']);
+		$user = User::create([
+			'username' => $input['username'],
+			'email' => $input['email'],
+			'password' => bcrypt($input['password']),
+			'activation_code' => $activation_code
+		]);
+
+		$response = new \stdClass();
+		if ($user) {
+			Auth::login($user);
+
+			Mail::queueOn('email_validations','emails.account_activation', array('activation_code'=>$activation_code), function($message) use($input)
+			{
+				$message->from('no-reply@gafers.com','Gafers');
+			    $message->to($input['email'], $input['username'])->subject('Welcome!');
+			});
+
+			$response->success = true;
+			$response->data = $user;
+		} else {
+			$response->success = false;
+			$response->data = null;
 		}
-
-		return response()->json(["Message" => "Success"]);
+		
+		return response()->json($response);
 	}
-	
+
 	public function postLogin(LoginRequest $request)
 	{
 		$input = Request::all();
-		$data = new \stdClass();
+		$response = new \stdClass();
 		if (Auth::attempt(['email' => $input['email'], 'password' => $input['password']])){
-			$data->success = true;
-			$data-> user = Auth::user();
-            return response()->json($data);
+			$response->success = true;
+			$response->data = Auth::user();
+            return response()->json($response);
         } else {
-        	$data->success = false;
-        	$data->user = null;
-        	return response()->json($data);
+        	$response->email = 'We couldnt find this combination in our database';
+        	return response(json_encode($response), 401);
         }
+	}
+
+	public function getLogout()
+	{
+		$response = new \stdClass();
+		Auth::logout();
+		$response->success = true;
+		return response()->json($response);
 	}
 
     
@@ -98,8 +129,9 @@ class AuthController extends Controller {
 	       	$users = User::where('facebook_id','=',$user_from_facebook['id']);
 	       	$users = $users->count() ? $users : User::where('email','=',$user_from_facebook['email']);
 	       	
+	       		
 	       	if ($users->count() == 0) {
-	       		$username = (is_null($user_from_facebook['nickname']) ? $user_from_facebook['first_name'] : $user_from_facebook['nickname']) . '_' . uniqid();
+	       		$username = (!isset($user_from_facebook['nickname']) ? $user_from_facebook['first_name'] : $user_from_facebook['nickname']) . '_' . uniqid();
 		        $user = User::create([
 					'username' => $username,
 					'email' => $user_from_facebook['email'],
@@ -123,7 +155,11 @@ class AuthController extends Controller {
 	       	//if all is good login the user and redirect him 
 	       	if ($user) {
 	        	Auth::login($user);
-	        	echo json_encode($user);
+	        	$response = [
+	        		'success' => true,
+	        		'data'	=> $user
+	        	];
+	        	return response()->json($response);
 	       		//return Redirect::intended('/');
 	       	} else {
 	       		echo 'something went wrong';

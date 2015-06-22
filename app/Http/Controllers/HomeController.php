@@ -2,6 +2,7 @@
 
 use \Auth as Auth;
 use App\Post;
+use Request;
 
 class HomeController extends Controller {
 
@@ -33,10 +34,20 @@ class HomeController extends Controller {
 	 */
 	public function index()
 	{
-		$posts = Post::all();
-		
-
-		return view('home',['posts'=>$posts]);
+		$posts = Post::where('status','=','active')->get();
+		$featured_post = Post::where('status','=','featured')->get();
+		$posts = $featured_post->merge($posts);
+		$response = [
+			'success' => true,
+			'data'	=> $posts
+		];
+		if (Request::ajax()) {
+			return json_encode($response);
+		} else {
+			return view('home');
+		}
 	}
+
+
 
 }

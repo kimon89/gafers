@@ -21,6 +21,10 @@ class CreatePostsTable extends Migration {
 			$table->string('gif');
 			$table->string('mp4');
 			$table->string('webm');
+			$table->string('status');
+			$table->string('track_key');
+			$table->string('file_name');
+			$table->string('url_key');
 			$table->timestamps();
 		});
 	}

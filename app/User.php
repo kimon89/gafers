@@ -49,7 +49,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * Define relationship with posts
 	 * @return [type] [description]
 	 */
-	public function post()
+	public function posts()
 	{
 		return $this->hasMany('App\Post');
 	}

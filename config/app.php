@@ -202,4 +202,6 @@ return [
 
 	],
 
+	'url_key_length' => 3,
+
 ];

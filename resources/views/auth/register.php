@@ -2,12 +2,13 @@
 <div class="modal fade">
 <div class="modal-dialog">
 <div class="modal-content">
+<div class="modal-header">
+	  	<h4 class="modal-title" id="gridSystemModalLabel">Register</h4>
+	</div>
+<div class="modal-body">
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
-				<div class="panel-heading">Register</div>
-				<div class="panel-body">
 					{{#if errors}}
 						<div class="alert alert-danger">
 							<strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -18,34 +19,31 @@
 							</ul>
 						</div>
 						{{/if}}
-					<form class="form-horizontal" role="form" method="POST" action="#register">
+						<a class="btn btn-block btn-social btn-lg btn-facebook facebook-login" href="/loginFacebook">
+					 	<i class="fa fa-facebook"></i> Sign in with Facebook
+					 </a>
+					 {{#with formData}}
+					<form class="form-horizontal" role="form" method="POST" action="/register">
 						<input type="hidden" name="_token" value="{{ csrf_token }}">
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Username</label>
 							<div class="col-md-6">
-								<input type="text" class="form-control" name="username" value="{{ username }}">
+								<input type="text" class="form-control" autofocus required name="username" value="{{ username }}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">E-Mail Address</label>
 							<div class="col-md-6">
-								<input type="email" class="form-control" name="email" value="{{ email }}">
+								<input type="email" class="form-control" required name="email" value="{{ email }}">
 							</div>
 						</div>
 
 						<div class="form-group">
 							<label class="col-md-4 control-label">Password</label>
 							<div class="col-md-6">
-								<input type="password" class="form-control" name="password">
-							</div>
-						</div>
-
-						<div class="form-group">
-							<label class="col-md-4 control-label">Confirm Password</label>
-							<div class="col-md-6">
-								<input type="password" class="form-control" name="password_confirmation">
+								<input type="password" class="form-control" required name="password">
 							</div>
 						</div>
 
@@ -57,8 +55,8 @@
 							</div>
 						</div>
 					</form>
-				</div>
-			</div>
+					{{/with}}
+					</div>
 		</div>
 	</div>
 </div>

@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration {
 			$table->string('password', 60);
 			$table->string('activation_code');
 			$table->boolean('active');
-			$table->string('facebook_id')->unique();
+			$table->string('facebook_id')->unique()->nullable()->default(null);
 			$table->rememberToken();
 			$table->timestamps();
 		});

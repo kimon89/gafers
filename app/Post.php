@@ -23,7 +23,7 @@ class Post extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['user_id','title','gif','mp4','webm','game_id'];
+	protected $fillable = ['user_id','title','gif','mp4','webm','game_id','status','track_key','file_name','url_key'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
