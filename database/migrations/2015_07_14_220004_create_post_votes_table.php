@@ -17,7 +17,7 @@ class CreatePostVotesTable extends Migration {
 			$table->integer('post_id');
 			$table->integer('user_id');
 			$table->integer('vote');
-			$table->primary(['comment_id','user_id']);
+			$table->primary(['post_id','user_id']);
 			$table->timestamps();
 		});
 	}
