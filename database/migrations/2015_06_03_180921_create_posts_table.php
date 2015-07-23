@@ -25,9 +25,9 @@ class CreatePostsTable extends Migration {
 			$table->string('track_key');
 			$table->string('file_name');
 			$table->string('url_key');
-			$table->int('views')->default(0);
-			$table->int('points')->default(0);
-			$table->int('category_id');
+			$table->integer('views')->default(0);
+			$table->integer('points')->default(0);
+			$table->integer('category_id');
 			$table->timestamps();
 		});
 	}
