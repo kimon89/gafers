@@ -17,7 +17,9 @@
 							</ul>
 						</div>
 					@endif
-
+					 <a class="btn btn-block btn-social btn-lg btn-facebook facebook-login" href="{{ url('/provider-login/facebook') }}">
+					 	<i class="fa fa-facebook"></i> Sign in with Facebook
+					 </a>
 					<form class="form-horizontal" role="form" method="POST" action="{{ url('/auth/login') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 

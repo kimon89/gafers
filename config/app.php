@@ -135,6 +135,10 @@ return [
 		'Illuminate\Translation\TranslationServiceProvider',
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
+		'Illuminate\Html\HtmlServiceProvider',
+        'FintechFab\LaravelQueueRabbitMQ\LaravelQueueRabbitMQServiceProvider',
+        'Laracasts\Flash\FlashServiceProvider',
+        'Laravel\Socialite\SocialiteServiceProvider',
 
 		/*
 		 * Application Service Providers...
@@ -192,7 +196,12 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+        'Socialize' => 'Laravel\Socialite\Facades\Socialite',
+        'HTML'      => 'Illuminate\Html\HtmlFacade',
+        'Flash' => 'Laracasts\Flash\Flash'
 
 	],
+
+	'url_key_length' => 3,
 
 ];
