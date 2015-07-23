@@ -1,5 +1,4 @@
 @extends('app')
-
 @section('content')
 <?php 
 	
@@ -10,5 +9,8 @@
 	include '../resources/views/post/create.php';
 	include '../resources/views/homepage.php';
 	include '../resources/views/user/settings.php';
+	include '../resources/views/post/view.php';
+	include '../resources/views/post/list.php';
+	include '../resources/views/comment/view.php';
 ?>
 @endsection

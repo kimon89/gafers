@@ -23,41 +23,73 @@
 						<input id="token" type="hidden" name="_token" value="{{ csrf_token }}">
 
 						<div class="form-group">
-							<label for="title-input" class="col-md-4 control-label">Title</label>
-							<div class="col-md-6">
-								<input id="title-input" type="text" class="form-control" name="title" value="{{ title }}" >
+							<label for="title-input" class="col-md-3 control-label">Title</label>
+							<div class="col-md-9">
+								<div class="row">
+									<div class="col-md-12">
+										<input id="title-input" type="text" class="form-control" name="title" value="{{ title }}" required>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group game">
+							<label class="col-md-3 control-label">Game</label>
+							<div class="col-md-7">
+								<div class="row">
+									<div class="col-md-11">
+									<input type="text" class="form-control" id="game-autocomplete" name="game" {{#if game}} value="{{game}}" disabled="true"{{/if}} required>
+									<input type="text" id="game-input" {{#if gameId}} value="{{gameId}}"{{/if}} name="game-input">
+									</div>
+									<span class="glyphicon glyphicon-remove-sign {{#if game}} {{else}} hidden{{/if}}" ></span>
+								</div>
+							</div>
+						</div>
+						<div class="form-group category">
+							<label class="col-md-3 control-label">Type</label>
+							<div class="col-md-7">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="btn-group" data-toggle="buttons">
+											<?php foreach($categories as $k => $category) { ?>
+							                <label class="btn btn-default {{#if selectedCategory<?=$category->id?>}}active{{/if}} category-<?=$category->name?>">
+							                    <input type="radio" name="category" value="<?=$category->id?>" /> <?=ucfirst($category->name)?>
+							                </label> 
+							                <?php } ?>
+							           	</div>	
+						            </div>
+					            </div>
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-md-4 control-label">File</label>
-							<div class="col-lg-6">
-							    <div class="input-group">
-							      <span class="input-group-addon">
-                                      <label for="file-type-text">URL</label>
-							        <input id="file-type-text" type="radio" name="file-type" class="file-type" {{file_type_text}} value="text" aria-label="..." >
-							        <label for="file-type-file">Upload</label>
-							        <input id="file-type-file" type="radio" name="file-type" class="file-type" {{file_type_file}} value="file" aria-label="...">
-							      </span>
-							      <input id="file-input" name="file" type="{{file_type}}" class="form-control" value="{{file}}" aria-label="...">
-							    </div><!-- /input-group -->
-							</div><!-- /.col-lg-6 -->
-						</div>
-						<div class="form-group">
-							<label class="col-md-4 control-label">Game</label>
-							<div class="col-md-6">
-								<input type="text" class="form-control" id="game-autocomplete" name="game" value="{{game}}" >
-								<input type="text" id="game-input" name="game-input">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="col-md-4 control-label"></label>
-							<div class="col-md-6">
-								<span id="game-holder"></span>
+							<label class="col-md-3 control-label">File</label>
+							<div class="col-md-9">
+								<div class="row">
+									<div class="col-md-5">
+									    <div class="btn-group file-type-select" role="group" aria-label="...">
+									    	<label type="button" data-type="upload" class="btn btn-default" for="file-input">Upload</label>
+										  	<button type="button" data-type="url" class="btn btn-default">URL</button>
+										</div>	
+									</div>
+									<div class="col-md-7 file-type">
+										<span class="file-name"></span>
+										<div class="upload-progress hidden"><div></div></div>
+										<input id="url-input" name="url" type="text" class="form-control hidden" value="{{url}}">
+										<input id="file-input" name="file" type="file" class="form-control hidden">	
+
+									</div>
+								</div>
+								<div  class="row">
+									<div class="col-md-12">
+										<div>
+											<i><small>Max upload size 300mb, max duration 15 seconds</small></i>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 			       		<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary" >
+								<button type="submit" class="btn btn-primary submit" >
 									Create
 								</button>
 							</div>

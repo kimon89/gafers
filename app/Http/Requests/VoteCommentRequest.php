@@ -3,8 +3,22 @@
 use App\Http\Requests\Request;
 use App\User;
 use Auth;
+use Illuminate\Validation\Factory;
+use App\CommentVote;
 
-class CreatePostRequest extends Request {
+class VoteCommentRequest extends Request {
+
+
+	public function __construct(Factory $factory)
+    {
+        $factory->extend('unique_vote', function ($attribute, $value, $parameters)
+            {
+            	$vote = CommentVote::where('comment_id','=',$value)->where('user_id','=',Auth::user()->id)->get();
+                return empty($vote->toArray());
+            },
+            'User has already voted'
+        );
+    }
 
 	/**
 	 * Only active users can create posts
@@ -25,9 +39,7 @@ class CreatePostRequest extends Request {
 	public function rules()
 	{
 		 return [
-	        'title' => 'required|between:5,120',
-	        'game_id' => 'required|exists:games,id',
-	        'category_id' => 'required|exists:categories,id',
+	        'commentId' => 'required|exists:comments,id'
     	];
 	}
 
@@ -37,7 +49,8 @@ class CreatePostRequest extends Request {
         // (default is to just redirect to initial page with errors)
         // 
         // Can return a response, a view, a redirect, or whatever else
-        //return response('Please verfiry your email', 403);
+        flash()->error('Please verify your email first');
+       return $this->redirector->back();
     }
 
    

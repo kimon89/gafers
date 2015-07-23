@@ -45,7 +45,7 @@ class ConvertFiles extends Command {
 		$mh = curl_multi_init();
 		foreach($posts as $post) {
 			$requests[$post->id] = curl_init();
-			curl_setopt($requests[$post->id], CURLOPT_URL, 'http://upload.gfycat.com/transcodeRelease/' . $post->track_key);
+			curl_setopt($requests[$post->id], CURLOPT_URL, 'http://upload.gfycat.com/transcodeRelease/' . $post->track_key . '?noResize=true');
 			curl_setopt($requests[$post->id], CURLOPT_HEADER, 0);
 			curl_setopt($requests[$post->id], CURLOPT_RETURNTRANSFER, 1);
 			curl_multi_add_handle($mh, $requests[$post->id]);
@@ -66,6 +66,7 @@ class ConvertFiles extends Command {
 				$post->status = 'converting';
 				$post->save();
 			} else {
+				$this->info(json_encode($res_obj));
 				//do the same thing for now
 				$post = $posts->find($post_id);
 				$post->status = 'converting';

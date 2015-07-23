@@ -6,6 +6,7 @@ use App\User;
 use App\Post;
 use Request;
 use App\Http\Requests\UpdateSettingsRequest;
+use App\Services\CategoryService;
 
 class UserController extends Controller {
 
@@ -21,48 +22,33 @@ class UserController extends Controller {
 	*/
 
 	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		//$this->middleware('auth');
-	}
-
-	/**
 	 * Show the account page to the user.
 	 *
 	 * @return Response
 	 */
-	public function account($username = null)
+	public function account($username)
 	{
-		$user = false;
-		if (!is_null($username)) {
-			//find the user by username
-			$user = User::select(['id','username'])->where('username','=',$username)->first();
-			if ($user) {
-				//get the users posts
-				$user->posts;
-			}
-		} else {
-			$user = Auth::user();
+		if (!Request::ajax()) {
+			$categories = CategoryService::getAllCategories();
+			return view('home',['categories' => $categories]);
 		}
 
-		//if its ajax return json
-		//else return the view
-		if (Request::ajax()) {
-			$response = new \stdClass();
-			if ($user) {
-				$response->success = true;
-			} else {
-				$response->success = false;
+		$user = false;
+		//find the user by username
+		$user = User::select(['id','username','default_avatar'])->where('username','=',$username)->first();
+		if ($user) {
+			//get the users posts
+			foreach($user->posts as $k => &$post){
+				if ($post->status == 'active') {
+					$post->active = true;
+				}
+				if ((!Auth::check() && $post->status != 'active') || ($post->status != 'active' && (Auth::user()->id != $post->user_id))){
+					unset($user->posts[$k]);
+				}
 			}
-			$response->data = $user;
-			return response()->json($response);
-		} else {
-			return view('user/account',['user' => $user]);
 		}
+
+		return response()->json(['success' => true,'data' => $user]);
 	}
 
 	/**

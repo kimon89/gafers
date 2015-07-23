@@ -58,9 +58,18 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * Define relationship with comments
 	 * @return [type] [description]
 	 */
-	public function comment()
+	public function comments()
 	{
 		return $this->hasMany('App\Comment');
+	}
+
+	/**
+	 * Define relationship with comments
+	 * @return [type] [description]
+	 */
+	public function commentVotes()
+	{
+		return $this->hasMany('App\CommentVote');
 	}
 
 }

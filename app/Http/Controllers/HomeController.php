@@ -3,6 +3,8 @@
 use \Auth as Auth;
 use App\Post;
 use Request;
+use App\Services\PostService;
+use App\Services\CategoryService;
 
 class HomeController extends Controller {
 
@@ -32,22 +34,33 @@ class HomeController extends Controller {
 	 *
 	 * @return Response
 	 */
-	public function index()
+	public function index($page = 1)
 	{
-		$posts = Post::where('status','=','active')->get();
-		$featured_post = Post::where('status','=','featured')->get();
-		$posts = $featured_post->merge($posts);
-		$response = [
-			'success' => true,
-			'data'	=> $posts
-		];
-		if (Request::ajax()) {
-			return json_encode($response);
-		} else {
-			return view('home');
+		if(!Request::ajax()){
+			$categories = CategoryService::getAllCategories();
+			return view('home',['categories'=>$categories]);
 		}
+		$posts = PostService::getHomepagePosts($page);
+		return response()->json(['success' => true,'data' => $posts]);
 	}
 
+	public function recent($page = 1)
+	{
+		if(!Request::ajax()){
+			$categories = CategoryService::getAllCategories();
+			return view('home',['categories'=>$categories]);
+		}
+		$posts = PostService::getRecentPosts($page);
+		return response()->json(['success' => true,'data' => $posts]);
+	}
 
-
+	public function category($categoryName, $page = 1)
+	{
+		if(!Request::ajax()){
+			$categories = CategoryService::getAllCategories();
+			return view('home',['categories'=>$categories]);
+		}
+		$posts = PostService::getCategoryPosts($categoryName,$page);
+		return response()->json(['success' => true,'data' => $posts]);
+	}
 }

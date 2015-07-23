@@ -40,16 +40,23 @@ class GetConverted extends Command {
 	public function fire()
 	{
 		$this->info('get converted files');
-		$posts = Post::where('status','=','converting')->get();
+		$posts = Post::whereIn('status',['converted','converting'])->get();
 		//call api to convert the file
 		$requests = [];
+		$posts_converted = [];
+
 		$mh = curl_multi_init();
 		foreach($posts as $post) {
-			$requests[$post->id] = curl_init();
-			curl_setopt($requests[$post->id], CURLOPT_URL, 'http://upload.gfycat.com/status/' . $post->track_key);
-			curl_setopt($requests[$post->id], CURLOPT_HEADER, 0);
-			curl_setopt($requests[$post->id], CURLOPT_RETURNTRANSFER, 1);
-			curl_multi_add_handle($mh, $requests[$post->id]);
+			if ($post->status == 'converting') {
+				$requests[$post->id] = curl_init();
+				curl_setopt($requests[$post->id], CURLOPT_URL, 'http://upload.gfycat.com/status/' . $post->track_key);
+				curl_setopt($requests[$post->id], CURLOPT_HEADER, 0);
+				curl_setopt($requests[$post->id], CURLOPT_RETURNTRANSFER, 1);
+				curl_multi_add_handle($mh, $requests[$post->id]);
+			} else {
+				//it has already been converted
+				$posts_converted[$post->file_name] = $post;
+			}
 		}
 
 		$running = 1;
@@ -57,21 +64,27 @@ class GetConverted extends Command {
 			curl_multi_exec($mh, $running);
 		}
 
-		$posts_converted = [];
+		
 		$posts_invalid = [];
 		foreach ($requests as $post_id => $request) {
 			$content = curl_multi_getcontent($request);
 			$res_obj = json_decode((String) $content);
-			
+			$this->info(json_encode($res_obj));
 			if ($res_obj->task == 'complete') {
 				//convertion was succesful
 				//store in array in order to get more data later
 				$posts_converted[$res_obj->gfyname] = $posts->find($post_id);
 			} else if ($res_obj->task == 'error'){
 				//no error code unfortunately
-				if (strpos($res_obj->error, 'valid') !== false || strpos($res_obj->error, 'unique') !== false){
+				if (strpos($res_obj->error, 'valid') !== false 
+					|| strpos($res_obj->error, 'unique') !== false
+					|| strpos($res_obj->error, 'Upload') !== false
+					|| strpos($res_obj->error, 'seconds max') !== false
+					){
 					$posts_invalid[] = $posts->find($post_id);
 				}
+			} else {
+				$posts_invalid[] = $posts->find($post_id);
 			}
 			curl_multi_remove_handle($mh, $request);
 		}
@@ -81,9 +94,9 @@ class GetConverted extends Command {
 		$mh = curl_multi_init();
 		$requests = [];
 		//get the data for the converted files
-		foreach ($posts_converted as $gif_name => $post) {
+		foreach ($posts_converted as $file_name => $post) {
 			$requests[$post->id] = curl_init();
-			curl_setopt($requests[$post->id], CURLOPT_URL, 'http://gfycat.com/cajax/get/' . $gif_name);
+			curl_setopt($requests[$post->id], CURLOPT_URL, 'http://gfycat.com/cajax/get/' . $file_name);
 			curl_setopt($requests[$post->id], CURLOPT_HEADER, 0);
 			curl_setopt($requests[$post->id], CURLOPT_RETURNTRANSFER, 1);
 			curl_multi_add_handle($mh, $requests[$post->id]);
@@ -98,9 +111,9 @@ class GetConverted extends Command {
 		foreach ($requests as $post_id => $request) {
 			$post = $posts->find($post_id);
 			$res_obj = json_decode((String) curl_multi_getcontent($request));
-			$post->webm = $res_obj->gfyItem->webmUrl;
-			$post->mp4 = $res_obj->gfyItem->mp4Url;
-			$post->gif = $res_obj->gfyItem->gifUrl;
+			$post->webm = str_replace('http','https',$res_obj->gfyItem->webmUrl);
+			$post->mp4 = str_replace('http','https',$res_obj->gfyItem->mp4Url);
+			$post->gif = str_replace('http','https',$res_obj->gfyItem->gifUrl);
 			$post->file_name = $res_obj->gfyItem->gfyName;
 			$post->status = 'active';
 			$post->save();

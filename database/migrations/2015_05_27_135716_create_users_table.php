@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration {
 			$table->string('activation_code');
 			$table->boolean('active');
 			$table->string('facebook_id')->unique()->nullable()->default(null);
+			$table->integer('default_avatar');
 			$table->rememberToken();
 			$table->timestamps();
 		});

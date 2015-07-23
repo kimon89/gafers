@@ -38,14 +38,19 @@ class Scrape extends Command {
          */
         public function fire()
         {
+            $excludedGames = [
+                'Grand Theft Auto V (PS4/XOne)',
+                'Dota Heroes'
+            ];
+
             //get data from source
-            $final_titles = $this->scrap('1');
+            $final_titles = $this->scrape('1');
 
             foreach(range('a','z') as $letter) {
                 $final_titles = array_merge($final_titles,$this->scrap($letter));
             }
-            file_put_contents('resources/gamedata.json',json_encode($final_titles));
-            $this->info('Gamedata json generated');
+            //file_put_contents('resources/gamedata.json',json_encode($final_titles));
+            //$this->info('Gamedata json generated');
             
             //compare to database data
             $this->info('Comparing to database');
@@ -63,7 +68,7 @@ class Scrape extends Command {
                     //check if games exists
                     if(Game::where('name',$game_name)->exists()) {
                         $this->info($game_name . ' already exists in the database');
-                    } else {
+                    } else if(!in_array($game_name, $excludedGames)){
                         $this->info($game_name . ' does not exist in the database');
                         $this->info('Inserting: ' . $game_name);
                         $game = new Game();
@@ -84,7 +89,7 @@ class Scrape extends Command {
         }
         
         
-        private function scrap($letter) {
+        private function scrape($letter) {
             $titles = [];
             $url = 'http://www.gamerevolution.com/game/all/'.$letter.'/long_name/asc';
             $this->info('Processing:' . $url);
@@ -102,31 +107,4 @@ class Scrape extends Command {
             $this->info('Done Processing:' . $url);
             return array_unique($titles);
         }
-//
-//        /**
-//         * Get the console command arguments.
-//         *
-//         * @return array
-//         */
-//        protected function getArguments()
-//        {
-////                return [
-////                        ['example', InputArgument::REQUIRED, 'An example argument.'],
-////                ];
-//        }
-//
-//        /**
-//         * Get the console command options.
-//         *
-//         * @return array
-//         */
-//        protected function getOptions()
-//        {
-////                return [
-////                        ['example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null],
-////                ];
-//        }
-        
-        
-
 }

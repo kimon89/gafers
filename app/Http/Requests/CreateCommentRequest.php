@@ -4,7 +4,7 @@ use App\Http\Requests\Request;
 use App\User;
 use Auth;
 
-class CreatePostRequest extends Request {
+class CreateCommentRequest extends Request {
 
 	/**
 	 * Only active users can create posts
@@ -25,19 +25,15 @@ class CreatePostRequest extends Request {
 	public function rules()
 	{
 		 return [
-	        'title' => 'required|between:5,120',
-	        'game_id' => 'required|exists:games,id',
-	        'category_id' => 'required|exists:categories,id',
+	        'content' => 'required|between:1,250',
+	        'reply_id' => 'required_without:post_id|numeric|min:1|exists:comments,id',
+	        'post_id' => 'required_without:reply_id|numeric|min:1|exists:posts,id',
     	];
 	}
 
     public function forbiddenResponse()
     {
-        // Optionally, send a custom response on authorize failure 
-        // (default is to just redirect to initial page with errors)
-        // 
-        // Can return a response, a view, a redirect, or whatever else
-        //return response('Please verfiry your email', 403);
+       return response('Please verfiry your email', 403);
     }
 
    

@@ -23,7 +23,7 @@ class Post extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['user_id','title','gif','mp4','webm','game_id','status','track_key','file_name','url_key'];
+	protected $fillable = ['user_id','title','gif','mp4','webm','game_id','status','track_key','file_name','url_key','category_id'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -47,9 +47,30 @@ class Post extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 */
 	public function game()
 	{
-		return $this->hasOne('App\Game');
+		return $this->belongsTo('App\Game');
 	}
 
+	/**
+	 * Define post comment relationship
+	 * @return [type] [description]
+	 */
+	public function comments()
+	{
+		return $this->hasMany('App\Comment');
+	}
 
+	/**
+	 * Define post category relationship
+	 * @return [type] [description]
+	 */
+	public function category()
+	{
+		return $this->belongsTo('App\Category');
+	}
+
+	public function commentsCount()
+	{
+	  return $this->hasOne('App\Comment')->selectRaw('post_id, count(*) as aggregate')->groupBy('post_id');
+	}
 
 }
