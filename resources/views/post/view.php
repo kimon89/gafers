@@ -53,11 +53,11 @@
 				<div class="col-md-12">
 					<div class="row">
 						{{#with post}}
-						<div class="col-md-6 post-stats">
+						<div class="col-md-4 post-stats">
 							<span class="post-points">{{points}}</span><span data-postid="{{id}}" class="glyphicon glyphicon-arrow-up post-vote {{voted}}"></span>
 							<span class="post-views">{{views}}<span class="glyphicon glyphicon-eye-open"></span></span>
 						</div>
-						<div class="col-md-6 post-game">
+						<div class="col-md-8 post-game">
 							<span>{{#with game}} {{name}}{{/with}}</span>
 						</div>
 						{{/with}}
