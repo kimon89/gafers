@@ -12,5 +12,6 @@
 	include '../resources/views/post/view.php';
 	include '../resources/views/post/list.php';
 	include '../resources/views/comment/view.php';
+	include '../resources/views/feedback/create.php';
 ?>
 @endsection

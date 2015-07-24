@@ -431,8 +431,22 @@ $(function(){
                     });
                 });
         },
+        commentsRevert:function(){
+            var _this = this;
+            $('body').off('click','.comment-area');
+            $('body').off('click','.more-comments');
+            $('body').off('click','.more-replies');
+            $('body').off('click','.comment-reply-button');
+            $('body').off('keyup','.comment-area');
+            $('body').off('click','.comment-vote');
+            if (_this.elements.comments != null) {
+                _this.elements.comments.remove();
+                _this.elements.comments = null;
+            }
+        },
         comments:function(postId, commentId, page,initial){
             var _this = this;
+            _this.commentsRevert();
             var initial = initial == undefined ? true : false;
             var commentId = commentId ? commentId : 0;
             var page = page ? page : 1;
@@ -650,7 +664,7 @@ $(function(){
                 _this.elements.postForm.modal('show');
                 return;
             }
-            var postForm;
+            _this.postRevert();
             if (data != undefined) {
                 data.csrf_token = csrf_token;
             } else {
@@ -659,7 +673,7 @@ $(function(){
             var html = _this.render("#post-form-template",data);
             _this.elements.postForm = $(html).modal('show');
             _this.elements.postForm.on('shown.bs.modal',function(e){
-                postForm = new PostForm('#post-form');
+                _this.postFormManager = new PostForm('#post-form');
                 _this.elements.postForm.on('hidden.bs.modal', function (e) {
                     if (!_this.uploadInProgress) {
                         $('.upload-progress').each(function(k,el){
@@ -675,24 +689,28 @@ $(function(){
             $(_this.elements.postForm.find('form')).on('submit',function(e){
                 e.preventDefault();
                 _this.elements.postForm.find('.btn.submit').attr('disabled',true);
-                postForm.validateInput(function(response){
+                _this.postFormManager.validateInput(function(response){
+                    var formData = _this.postFormManager.formData;
                     if (response === true) {
                         _this.uploadInProgress = true;
-                        postForm.submit(function(response){
+                        _this.postFormManager.submit(function(response){
                             if (response.error){
                                 _this.postRevert();
                                 var data = {
                                     errors:{file:response.error},
-                                    title:postForm.formData.title,
-                                    file:postForm.formData.file,
-                                    game:postForm.formData.game,
-                                    gameId:postForm.formData.gameId
+                                    title:formData.title,
+                                    file:formData.file,
+                                    game:formData.game,
+                                    gameId:formData.gameId
                                 };
-                                data['selectedCategory'+postForm.formData.categoryId] = true;
+                                data['selectedCategory'+formData.categoryId] = true;
                                 _this.post(data);
                             } else {
+                                _this.elements.postForm.find('.btn-primary.submit').removeClass('btn-primary').addClass('btn-success').html('Success!');
+                                window.setTimeout(function() {
+                                    _this.postRevert();
+                                }, 2000);
                                 _this.uploadInProgress = false;
-                                _this.postRevert();
                             }
                         });
                     } else {
@@ -700,12 +718,12 @@ $(function(){
                         _this.postRevert(function(){
                             var data = {
                                 errors:response.errorList,
-                                title:postForm.formData.title,
-                                file:postForm.formData.file,
-                                game:postForm.formData.game,
-                                gameId:postForm.formData.gameId
+                                title:formData.title,
+                                file:formData.file,
+                                game:formData.game,
+                                gameId:formData.gameId
                             };
-                            data['selectedCategory'+postForm.formData.categoryId] = true;
+                            data['selectedCategory'+formData.categoryId] = true;
                             _this.post(data);
                         });
                     }
@@ -714,14 +732,18 @@ $(function(){
         },
         postRevert:function(callback){
             var _this = this;
-            if (_this.elements.postForm != null) {
+            if (_this.postFormManager) {
+                _this.postFormManager.destroy();
+                _this.postFormManager = null;
+            }
+            if (_this.elements.postForm) {
                 //register new hidden event
                 _this.elements.postForm.on('hidden.bs.modal',function(){
                     if (_this.elements.postForm != null) {
                         _this.elements.postForm.remove();
                         _this.elements.postForm = null;
                     }
-                    if (callback){
+                    if (callback) {
                         callback();
                     }
                 });
@@ -730,10 +752,10 @@ $(function(){
                     _this.elements.postForm.modal('hide');
                 } else {
                     //if its already hidden just remove it
-                    if (_this.elements.postForm != null) {
+                    if (_this.elements.postForm) {
                         _this.elements.postForm.remove();
                         _this.elements.postForm = null;
-                        if (callback){
+                        if (callback) {
                             callback();
                         }
                     }
@@ -973,6 +995,57 @@ $(function(){
             if (_this.elements.settingsPage != null) {
                 _this.elements.settingsPage.remove();
             }
+        },
+        feedbackRevert:function(callback){
+            var _this = this;
+            if (_this.elements.feedbackForm != null) {
+                _this.elements.feedbackForm.on('hidden.bs.modal', function (e) {
+                    _this.elements.feedbackForm.remove();
+                    _this.elements.feedbackForm = null;
+                    callback();
+                });
+                if (_this.elements.feedbackForm.hasClass('in')){
+                        _this.elements.postForm.modal('hide');
+                } else {
+                    //if its already hidden just remove it
+                    if (_this.elements.feedbackForm != null) {
+                        _this.elements.feedbackForm.remove();
+                        _this.elements.feedbackForm = null;
+                        if (callback){
+                            callback();
+                        }
+                    }
+                }
+            } else {
+                callback();
+            }
+
+        },
+        feedback:function(){
+            var _this = this;
+            _this.feedbackRevert(function(){
+                var html = _this.render("#feedback-form-template",[]);
+                _this.elements.feedbackForm = $(html).modal('show');
+                _this.elements.feedbackForm.find('form').on('submit',function(e){
+                    e.preventDefault();
+                    var form_el = $(this);
+                    $.ajax({
+                        url: "https://"+base_url+"/feedback",
+                        dataType:"json",
+                        method:"POST",
+                        data:{
+                            _token:csrf_token,
+                            content:_this.elements.feedbackForm.find('#content-input').val(),
+                            email:_this.elements.feedbackForm.find('#email-input').val()
+                        }
+                    }).done(function(data){
+                        form_el.find('.btn-primary.submit').removeClass('btn-primary').addClass('btn-success').html('Success!');
+                        window.setTimeout(function() {
+                            _this.elements.feedbackForm.modal('hide');
+                        }, 1000);
+                    });
+                });
+            });
         }
     };
 
@@ -985,6 +1058,9 @@ $(function(){
         });
     };
 
+
+
+
     function PostForm(formEl){
         this.formEl = $(formEl);
         this.elList = {};
@@ -992,6 +1068,9 @@ $(function(){
         this.errors = {
             errorCount:0,
             errorList:{},
+        };
+        this.destroy = function(){
+            var _this = this;
         };
         this.init = function(){
             var _this = this;
@@ -1070,7 +1149,7 @@ $(function(){
             _this.formData.fileType = $('.file-type-select .btn.active').data('type');
             if (_this.formData.fileType == 'upload') {
                 _this.formData.file = _this.elList.file;
-                if (_this.formData.file[0].files[0] == undefined) {
+                if (_this.formData.file[0].files[0] == undefined || _this.formData.file[0].files[0].size/(1024*1024) > 300) {
                     _this.errors.errorCount++;
                     _this.errors.errorList.file = 'Please select a gif or video file of max 15 seconds and 300mb size';
                 }

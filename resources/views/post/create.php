@@ -96,13 +96,6 @@
 						</div>
 						
 					</form>
-					<div class="overlay"></div>
-					<div class="progress">
-						<div class="progress-bar progress-bar-success progress-bar-striped progress-bar-upload" style="width: 0%">
-						</div>
-						<div class="progress-bar progress-bar-warning progress-bar-striped progress-bar-convert" style="width: 0%">
-						</div>
-					</div>
 		</div>
 		</div>
 		</div>

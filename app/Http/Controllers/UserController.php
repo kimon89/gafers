@@ -35,7 +35,9 @@ class UserController extends Controller {
 
 		$user = false;
 		//find the user by username
-		$user = User::select(['id','username','default_avatar'])->where('username','=',$username)->first();
+		$user = User::select(['id','username','default_avatar'])->where('username','=',$username)->with(['posts'=>function($query){
+			$query->orderBy('id','desc');
+		}])->first();
 		if ($user) {
 			//get the users posts
 			foreach($user->posts as $k => &$post){
@@ -71,7 +73,10 @@ class UserController extends Controller {
 	 */
 	public function settings()
 	{
-		return view('user/settings');
+		if (!Request::ajax()) {
+			$categories = CategoryService::getAllCategories();
+			return view('home',['categories' => $categories]);
+		}
 	}
 
 	/**
