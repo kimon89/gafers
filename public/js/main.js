@@ -816,14 +816,6 @@ $(function(){
                     }).done(function(response){
                         if(response.success && response.data) {
                             location.reload();
-                            // if (_this.elements.loginForm) {
-                            //     _this.loginRevert();
-                            // }
-                            // if (_this.elements.registrationForm) {
-                            //     _this.registerSubmitRevert();
-                            // }
-                            // _this.userData = response.data;
-                            // _this.navigationBar(response.data);
                         }  
                     });
                 });
