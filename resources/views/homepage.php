@@ -139,7 +139,7 @@ a.comment-author{
   position: absolute;
   right: 0px;
   top: 0;
-  margin-right:13px;
+  margin-right:25px;
   padding: 3px;
   margin-top: -10px;
   font-size: 0.8em;
