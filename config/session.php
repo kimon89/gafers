@@ -135,7 +135,7 @@ return [
 	|
 	*/
 
-	'domain' => '*.gafers.com',
+	'domain' => env('SESSION_COOKIE_DOMAIN', 'gafers.com'),
 
 	/*
 	|--------------------------------------------------------------------------

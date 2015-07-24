@@ -1227,5 +1227,6 @@ $(function(){
         };
         this.init();
     };
+    //user_data from php at app
     DOMManager.init(user_data,hash);
 });
