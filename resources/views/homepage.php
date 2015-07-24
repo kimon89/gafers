@@ -320,7 +320,7 @@ video{
 	font-weight:bolder;
 }
 
-.post-thumb > .thumb{
+.post-thumb  > .thumb{
 	background-color:rgb(166, 166, 166);
   font-size: 1.5em;
   text-align: center;
@@ -384,6 +384,18 @@ video{
 
 .row.more {
 	text-align: center;
+}
+
+.btn.feedback{
+	position:fixed;
+	right:10px;
+	bottom:0px;
+	margin-bottom:5px;
+}
+.feedback-form{
+	position:fixed;
+	right:10px;
+	bottom:0px;
 }
 
 </style>

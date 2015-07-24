@@ -34,6 +34,7 @@ Route::get('comment/view/{post_id}/{page}/{comment_id}', ['uses' => 'CommentCont
 Route::post('comment/vote', ['uses' => 'CommentController@vote','middleware'=>'auth']);
 Route::get('comment/replies/{commentId}/{page}/{limit}/{offset}', ['uses' => 'CommentController@replies']);
 Route::get('game/{gameName}', ['uses' => 'PostController@game'])->where('gameName', '[A-Za-z0-9\W]+');
+Route::post('feedback', ['uses' => 'FeedbackController@create']);
 
 
 Route::controllers([

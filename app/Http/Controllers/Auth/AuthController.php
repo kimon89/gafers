@@ -57,7 +57,9 @@ class AuthController extends Controller {
 			'username' => $input['username'],
 			'email' => $input['email'],
 			'password' => bcrypt($input['password']),
-			'activation_code' => $activation_code
+			'activation_code' => $activation_code,
+			'active' => 0,
+			'default_avatar' => rand(1,4),
 		]);
 
 		$response = new \stdClass();
@@ -83,10 +85,10 @@ class AuthController extends Controller {
 	public function postLogin(LoginRequest $request)
 	{
 		$input = Request::all();
-		$response = new \stdClass();
+		$response = [];
 		if (Auth::attempt(['email' => $input['email'], 'password' => $input['password']])){
-			$response->success = true;
-			$response->data = Auth::user();
+			$response['success'] = true;
+			$response['data'] = Auth::user();
             return response()->json($response);
         } else {
         	$response->email = 'We couldnt find this combination in our database';
@@ -96,9 +98,9 @@ class AuthController extends Controller {
 
 	public function getLogout()
 	{
-		$response = new \stdClass();
+		$response = [];
 		Auth::logout();
-		$response->success = true;
+		$response['success'] = true;
 		return response()->json($response);
 	}
 
@@ -138,6 +140,7 @@ class AuthController extends Controller {
 					'password' => bcrypt(md5($username.'X'.rand())),
 					'activation_code' => User::generateActivationCode($user_from_facebook['email']),
 					'active'	=> 0,
+					'default_avatar'	=> rand(1,4),
 					'facebook_id'	=> $user_from_facebook['id']
 				]);
 	       	} else {
