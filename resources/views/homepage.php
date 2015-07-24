@@ -83,6 +83,14 @@
     display:block;
 }
 
+.post .post-title span > a {
+	color:black;
+}
+
+.post .post-title.full span {
+	white-space:normal;
+}
+
 .post-vote{
 	font-size:1.5em;
 	color:grey;
@@ -424,7 +432,7 @@ video{
 	<div class="row post">
 		<div class="row">
 			<div class="col-md-10 post-title">
-				<span>{{title}}<span>
+				<span><a href="/gaf/{{url_key}}">{{title}}</a><span>
 			</div>
 			<div class="col-md-2">
 				<span data-postid="{{id}}" class="glyphicon glyphicon-arrow-up post-vote {{voted}}"></span>

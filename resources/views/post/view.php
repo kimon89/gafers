@@ -1,11 +1,11 @@
 <script id="post-template" type="text/x-handlebars-template">
 	<div class="container-fluid">
 	<div class="row">
-		<div class="col-md-7">
+		<div class="col-md-7 post">
 			{{#with post}}
 			<div class="row">
-				<div class="col-md-12">
-					<h3>{{title}}</h3>
+				<div class="col-md-12 post-title full">
+					<span>{{title}}</span>
 				</div>
 			</div>
 			<div class="row">
