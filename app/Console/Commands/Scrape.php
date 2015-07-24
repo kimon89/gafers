@@ -47,7 +47,7 @@ class Scrape extends Command {
             $final_titles = $this->scrape('1');
 
             foreach(range('a','z') as $letter) {
-                $final_titles = array_merge($final_titles,$this->scrap($letter));
+                $final_titles = array_merge($final_titles,$this->scrape($letter));
             }
             //file_put_contents('resources/gamedata.json',json_encode($final_titles));
             //$this->info('Gamedata json generated');
