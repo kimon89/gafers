@@ -571,7 +571,7 @@ $(function(){
                                             var reply = $(html);
                                             //reply to 0 level comment
                                             if (commentArea.parents('.comment-row-level-0').length > 0) {
-                                                commentArea.parents('.comment-row-level-0').next().append(reply);
+                                                commentArea.parents('.comment-row-level-0').next().find('div:first-child > div:first-child > div').append(reply);
                                             } else {
                                                 //reply to 1 level comment
                                                 commentArea.parents('.replies').find('div:first-child > div:first-child > div').append(reply);
