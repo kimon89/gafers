@@ -574,7 +574,7 @@ $(function(){
                                                 commentArea.parents('.comment-row-level-0').next().append(reply);
                                             } else {
                                                 //reply to 1 level comment
-                                                commentArea.parents('.replies > div > div:first-child > div').append(reply);
+                                                commentArea.parents('.replies > div:first-child > div:first-child > div').append(reply);
                                             }
                                         } else {
                                             var commentHtml = _this.render('#comments-template',{comments:[response.data]});
