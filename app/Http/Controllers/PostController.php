@@ -107,7 +107,7 @@ class PostController extends Controller {
 		}
 		
 		$post->{$post->status} = true;
-		$post->status = $post->status == 'converted' ? 'converting' : $post->status;
+		$post->status = ($post->status == 'converted' || $post->status == 'uploaded') ? 'converting' : $post->status;
 
 		if (!Request::ajax()) {
 			$categories = CategoryService::getAllCategories();
