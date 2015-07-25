@@ -422,6 +422,16 @@ video{
 	margin-top:60px;
 }
 
+.nav li.post-button a{
+	color:white;
+	font-weight:bolder;
+	background-color:#3BE0AF;
+	box-shadow: 0px 0px 10px #3BE0AF;
+}
+.nav li.post-button a:hover{
+	background-color:#3BE0AF;
+}
+
 </style>
 
 <script id="homepage-template" type="text/x-handlebars-template">
@@ -433,7 +443,7 @@ video{
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			 <h4 style="color:darkgrey;text-align:center;">Dota2, GTA5, World of Warcraft, Age of Empires...</h4>
+			 <h4 style="color:darkgrey;text-align:center;">Win? Fail? or just cool? <a data-action="post" href="#">upload</a> your video and share it with the world!</h4>
 		</div>
 	</div>
 	<div class="row content">
