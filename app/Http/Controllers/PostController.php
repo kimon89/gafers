@@ -80,7 +80,7 @@ class PostController extends Controller {
 
 		$post->save();
 
-		return response()->json(['success' => true,'data' => []]);
+		return response()->json(['success' => true,'data' => $url_key]);
 	}
 
 	/**
@@ -90,6 +90,24 @@ class PostController extends Controller {
 	public function view($gafKey)
 	{
 		$post = PostService::getPostByKey($gafKey);
+		if (!$post) {
+			if (!Request::ajax()) {
+				return view('home',['post' => [],'categories' => []]);
+			}
+			return response()->json(['success' => true,'data' => ['post'=>[],'related'=>[]]]);
+		}
+
+		//record the view
+		$post->views = $post->views+1;
+		$post->save();
+
+		//append if the user has voted
+		if (Auth::check()) {
+			$post->voted = PostService::hasUserVoted($post->id,Auth::user()->id) ? 'voted' : '';
+		}
+		
+		$post->{$post->status} = true;
+		$post->status = $post->status == 'converted' ? 'converting' : $post->status;
 
 		if (!Request::ajax()) {
 			$categories = CategoryService::getAllCategories();

@@ -10,12 +10,17 @@
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<div class="row video">
+					<div class="row video {{status}}">
 						<div class="col-md-12">
+							{{#if active}}
 							<video width="100%" autoplay loop>
 								<source src="{{webm}}" type="video/webm">
 								<source src="{{mp4}}" type="video/mp4">
 							</video>
+							{{else}}
+							<img src="/css/icons/{{status}}.png" width=200>
+							<span>{{status}}</span>
+							{{/if}}
 						</div>
 					</div>
 					<div class="row controls">
