@@ -48,7 +48,7 @@
 					{{else}}
 						<li><a data-action="login" href="#">Sign In</a></li>
 					{{/if}}
-						<li>
+						<li class="post-button">
 							<a data-action="post" href="#">Post</a>
 							<div class="upload-progress hidden"><div></div></div>
 						</li>
