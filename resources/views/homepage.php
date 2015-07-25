@@ -406,6 +406,22 @@ video{
 	bottom:0px;
 }
 
+.video.converting,.video.invalid,.video.converted,.video.uploaded{
+	background-color:grey;
+	height:300px;
+}
+.video.converting span,.video.invalid span,.video.converted span,.video.uploaded span {
+	font-size:2em;
+	display:block;
+	text-align:center;
+	font-weight: bolder;
+}
+.video.converting img,.video.invalid img,.video.converted img,.video.uploaded img {
+	display: block;
+	margin:0 auto;
+	margin-top:60px;
+}
+
 </style>
 
 <script id="homepage-template" type="text/x-handlebars-template">

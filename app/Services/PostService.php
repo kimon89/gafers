@@ -15,26 +15,21 @@ class PostService {
 	static function getPostByKey($key)
 	{
 		$cacheKey = 'post:'.$key;
+		$cacheTtl = 5;
 
 		if (Cache::has($cacheKey)) {
 			$post = Cache::get($cacheKey);
 		} else {
-			$post = Post::where('url_key','=',$key)->where('status','=','active')->with(['game','category'])->get()[0];
-			Cache::put($cacheKey,$post,5);
+			$post = Post::where('url_key','=',$key)->with(['game','category'])->first();
+			if (empty($post)) {
+				return null;
+			}
+			if ($post->status != 'active') {
+				$cacheTtl = 1;
+			}
+			Cache::put($cacheKey,$post,$cacheTtl);
 		}
-		//record the view
-		$post->views = $post->views+1;
-		$post->save();
-
-		//append if the user has voted
-		if (Auth::check()) {
-			$post->voted = self::hasUserVoted($post->id,Auth::user()->id) ? 'voted' : '';
-		}
-
-		if ($post->status == 'active') {
-			$post->active = true;
-		}
-
+		
 		return $post;
 	}
 

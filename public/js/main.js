@@ -220,6 +220,8 @@ $(function(){
             var initial = initial == undefined ? true : initial;
             var page = data.page ? data.page : 1;
             var type = data.type ? data.type : 'top';
+            delete data.page;
+            delete data.type;
             $.ajax({
                 url:"https://"+base_url+"/"+type+"/"+(data[0]?data[0]+"/":"")+page,
                 method:'GET',
@@ -295,9 +297,7 @@ $(function(){
         },
         gaf:function(data){
             var _this = this;
-
             _this.gafRevert();
-
             $.ajax({
                 url:"https://"+base_url+"/gaf/" + data[0],
                 method:'GET',
@@ -320,85 +320,91 @@ $(function(){
                 var videoTime = $('.video-time');
                 var manualPause = false;
 
-                $(video).on('click',function(){
-                    if (video.paused) {
-                        $('.video-play').trigger('click');
-                    } else {
-                        $('.video-pause').trigger('click');
-                    }
-                });
-
-                var updateTime = function(){
-                    videoTime.html(parseFloat(video.currentTime).toPrecision(3));
-                };
-
-                var renderProgress = function(){
-                   // is percent correct?
-                   if (timeDrag == false){
-                       var percent = (100 / video.duration) * video.currentTime;
-                       seekBar.css('width',percent+'%');
-                       requestAnimationFrame(renderProgress);
-                       updateTime();
-                    }
-                };
-                    renderProgress();
-
-                var updatebar = function(x) {
-                    var progress = $('#seekBar');
-                    var maxduration = video.duration; //Video duraiton
-                    var position = x - progress.offset().left; //Click pos
-                    var percentage = 100 * position / progress.width();
-                 
-                    //Check within range
-                    if(percentage > 100) {
-                        percentage = 100;
-                    }
-                    if(percentage < 0) {
-                        percentage = 0;
-                    }
-                 
-                    //Update progress bar and video currenttime
-                    $('#seekBarInner').css('width', percentage+'%');
-                    video.currentTime = maxduration * percentage / 100;
-                };
-
-                $('#seekBar').mousedown(function(e) {
-                    video.pause();
-                    timeDrag = true;
-                    updatebar(e.pageX);
-                });
-                $(document).mouseup(function(e) {
-                    if(timeDrag) {
-                        if(!manualPause){
-                            video.play();
+                if (video) {
+                    $(video).on('click',function(){
+                        if (video.paused) {
+                            $('.video-play').trigger('click');
+                        } else {
+                            $('.video-pause').trigger('click');
                         }
-                        timeDrag = false;
-                        updatebar(e.pageX);
-                    }
-                    renderProgress();
-                });
-                $(document).mousemove(function(e) {
-                    if(timeDrag) {
-                        updatebar(e.pageX);
-                        updateTime();
-                    }
-                });
+                    });
 
-                $('body').on('click','.video-pause',function(){
-                    manualPause = true;
-                    video.pause();
-                    $(this).removeClass('glyphicon-pause video-pause');
-                    $(this).addClass('glyphicon-play video-play');
-                });
+                    var updateTime = function(){
+                        videoTime.html(parseFloat(video.currentTime).toPrecision(3));
+                    };
 
-                $('body').on('click','.video-play',function(){
-                    video.play();
-                    $(this).removeClass('glyphicon-play video-play');
-                    $(this).addClass('glyphicon-pause video-pause');
-                });
+                    var renderProgress = function(){
+                       // is percent correct?
+                       if (timeDrag == false){
+                           var percent = (100 / video.duration) * video.currentTime;
+                           seekBar.css('width',percent+'%');
+                           requestAnimationFrame(renderProgress);
+                           updateTime();
+                        }
+                    };
+                        renderProgress();
+
+                    var updatebar = function(x) {
+                        var progress = $('#seekBar');
+                        var maxduration = video.duration; //Video duraiton
+                        var position = x - progress.offset().left; //Click pos
+                        var percentage = 100 * position / progress.width();
+                     
+                        //Check within range
+                        if(percentage > 100) {
+                            percentage = 100;
+                        }
+                        if(percentage < 0) {
+                            percentage = 0;
+                        }
+                     
+                        //Update progress bar and video currenttime
+                        $('#seekBarInner').css('width', percentage+'%');
+                        video.currentTime = maxduration * percentage / 100;
+                    };
+
+                    $('#seekBar').mousedown(function(e) {
+                        video.pause();
+                        timeDrag = true;
+                        updatebar(e.pageX);
+                    });
+                    $(document).mouseup(function(e) {
+                        if(timeDrag) {
+                            if(!manualPause){
+                                video.play();
+                            }
+                            timeDrag = false;
+                            updatebar(e.pageX);
+                        }
+                        renderProgress();
+                    });
+                    $(document).mousemove(function(e) {
+                        if(timeDrag) {
+                            updatebar(e.pageX);
+                            updateTime();
+                        }
+                    });
+
+                    $('body').on('click','.video-pause',function(){
+                        manualPause = true;
+                        video.pause();
+                        $(this).removeClass('glyphicon-pause video-pause');
+                        $(this).addClass('glyphicon-play video-play');
+                    });
+
+                    $('body').on('click','.video-play',function(){
+                        video.play();
+                        $(this).removeClass('glyphicon-play video-play');
+                        $(this).addClass('glyphicon-pause video-pause');
+                    });
+                }
 
                 _this.voteTrigger();
             });
+        },
+        revertVoteTrigger:function(){
+            var _this = this;
+            $('body').off('click','.post-vote');
         },
         voteTrigger:function(){
             var _this = this;
@@ -654,6 +660,7 @@ $(function(){
         },
         gafRevert:function(){
             var _this = this;
+            _this.revertVoteTrigger();
             if (_this.elements.gafPage) {
                 _this.elements.gafPage.remove();
                 _this.elements.gafPage = null;
@@ -709,7 +716,9 @@ $(function(){
                             } else {
                                 _this.elements.postForm.find('.btn-primary.submit').removeClass('btn-primary').addClass('btn-success').html('Success!');
                                 window.setTimeout(function() {
-                                    _this.postRevert();
+                                    _this.postRevert(function(){
+                                        _this.goToState('gaf',[response.data]);
+                                    });
                                 }, 2000);
                                 _this.uploadInProgress = false;
                             }
