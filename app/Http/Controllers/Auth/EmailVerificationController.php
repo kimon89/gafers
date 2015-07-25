@@ -27,15 +27,18 @@ class EmailVerificationController extends Controller {
     public function emailValidation($activation_code)
     {
         $user = User::where('activation_code','=',$activation_code)->first();
-        if ($user) {
+        if (!empty($user)) {
             $user->active = 1;
             $user->activation_code = '';
-        }
-        if ($user->save()) {
-            Auth::login($user);
-            flash()->success('Yay! Your account has now been fully activated!');
-            return redirect()->route('base');
-        }
+            if ($user->save()) {
+                Auth::login($user);
+                flash()->success('Yay! Your account has now been fully activated!');
+                return redirect()->route('base');
+            }
+        } 
+
+        flash()->error('Activation code not found');
+        return redirect()->route('base');
     }
 
     public function resendValidationEmail()
