@@ -69,7 +69,10 @@ class GetConverted extends Command {
 		foreach ($requests as $post_id => $request) {
 			$content = curl_multi_getcontent($request);
 			$res_obj = json_decode((String) $content);
-			$this->info(json_encode($res_obj));
+			if ($res_obj->task == 'encoding')
+			{
+				continue;
+			}
 			if ($res_obj->task == 'complete') {
 				//convertion was succesful
 				//store in array in order to get more data later

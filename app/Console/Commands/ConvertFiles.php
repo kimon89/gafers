@@ -59,6 +59,7 @@ class ConvertFiles extends Command {
 
 		foreach ($requests as $post_id => $request) {
 			$res_obj = json_decode((String) curl_multi_getcontent($request));
+			$this->info(json_encode($res_obj));
 			if (isset($res_obj->isOk)) {
 				//conversion request sent
 				//update the post status in database
