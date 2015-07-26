@@ -20,7 +20,7 @@ class PostService {
 		if (Cache::has($cacheKey)) {
 			$post = Cache::get($cacheKey);
 		} else {
-			$post = Post::where('url_key','=',$key)->with(['game','category'])->first();
+			$post = Post::where('url_key','=',$key)->with(['game','category','user'])->first();
 			if (empty($post)) {
 				return null;
 			}
@@ -40,7 +40,7 @@ class PostService {
 		if (Cache::has($cacheKey)) {
 			$posts = Cache::get($cacheKey);
 		} else {
-			$posts = Post::where('game_id','=',$gameId)->where('status','=','active')->whereNotIn('id',$notIn)->with(['game'])->limit($limit)->get();
+			$posts = Post::where('game_id','=',$gameId)->where('status','=','active')->whereNotIn('id',$notIn)->with(['game','user','category'])->limit($limit)->get();
 			Cache::put($cacheKey,$posts,5);
 		}
 
@@ -71,7 +71,7 @@ class PostService {
 		if (Cache::has($cacheKey)) {
 			$posts = Cache::get($cacheKey);
 		} else {
-			$posts = Post::where('category_id','=',$categoryId)->where('status','=','active')->whereNotIn('id',$notIn)->with(['game','category','commentsCount'])->limit($limit)->offset($offset)->orderBy('points','desc')->get();
+			$posts = Post::where('category_id','=',$categoryId)->where('status','=','active')->whereNotIn('id',$notIn)->with(['game','category','commentsCount','user'])->limit($limit)->offset($offset)->orderBy('points','desc')->get();
 			Cache::put($cacheKey,$posts,5);
 		}
 
@@ -104,7 +104,7 @@ class PostService {
 			'featured' 	=> [],
 			'posts'		=> []
 		];
-		$data['featured'] = Post::where('status','=','active')->with(['game','category','commentsCount'])->limit($limit)->offset($offsetFeatured)->orderBy('points','desc')->get();
+		$data['featured'] = Post::where('status','=','active')->with(['game','category','commentsCount','user'])->limit($limit)->offset($offsetFeatured)->orderBy('points','desc')->get();
 		$data['posts'] = Post::where('status','=','active')->with(['game','category'])->limit($limitPosts)->offset($offsetPosts)->orderBy('id','desc')->get();
 		
 		foreach($data['featured'] as &$post) {
@@ -130,8 +130,8 @@ class PostService {
 			'featured' 	=> [],
 			'posts'		=> []
 		];
-		$data['featured'] = Post::where('status','=','active')->with(['game','category','commentsCount'])->limit($limit)->offset($offsetFeatured)->orderBy('id','desc')->get();
-		$data['posts'] = Post::where('status','=','active')->with(['game','category'])->limit($limitPosts)->offset($offsetPosts)->orderBy('points','desc')->get();
+		$data['featured'] = Post::where('status','=','active')->with(['game','category','commentsCount','user'])->limit($limit)->offset($offsetFeatured)->orderBy('id','desc')->get();
+		$data['posts'] = Post::where('status','=','active')->with(['game','category','user'])->limit($limitPosts)->offset($offsetPosts)->orderBy('points','desc')->get();
 		
 		foreach($data['featured'] as &$post) {
 			if (Auth::check()) {
@@ -157,7 +157,7 @@ class PostService {
 			'posts'		=> []
 		];
 		$data['featured'] = self::getPostsByCategoryName($categoryName,[],$page,$limit);
-		$data['posts'] = Post::where('status','=','active')->with(['game','category'])->limit($limitPosts)->offset($offsetPosts)->orderBy('id','desc')->get();
+		$data['posts'] = Post::where('status','=','active')->with(['game','category','user'])->limit($limitPosts)->offset($offsetPosts)->orderBy('id','desc')->get();
 		
 		foreach($data['featured'] as &$post) {
 			if (Auth::check()) {

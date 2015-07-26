@@ -441,6 +441,17 @@ video{
 	background-color:#3BE0AF;
 }
 
+.uploader > div {
+	font-size:0.9em;
+	color:grey;
+	margin-top:-8px;
+}
+
+.post .uploader > div{
+	text-align: right;
+	margin-top:-8px;
+}
+
 </style>
 
 <script id="homepage-template" type="text/x-handlebars-template">
@@ -472,6 +483,11 @@ video{
 			<div class="col-md-2">
 				<span data-postid="{{id}}" class="glyphicon glyphicon-arrow-up post-vote {{voted}}"></span>
 				<span class="post-points">{{points}}<span>
+			</div>
+		</div>
+		<div class="row uploader">
+			<div class="col-md-12">
+				in <a href="/game/{{game.url_name}}">{{game.name}}</a> by {{#if user.username}}<a href="/user/{{user.username}}">{{user.username}}</a>{{else}}anonymous{{/if}}
 			</div>
 		</div>
 		<div class="row">
