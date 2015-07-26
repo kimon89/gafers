@@ -92,7 +92,7 @@ class PostController extends Controller {
 		$post = PostService::getPostByKey($gafKey);
 		if (!$post) {
 			if (!Request::ajax()) {
-				return view('home',['post' => [],'categories' => []]);
+				return view('home',['post' => false,'categories' => []]);
 			}
 			return response()->json(['success' => true,'data' => ['post'=>[],'related'=>[]]]);
 		}

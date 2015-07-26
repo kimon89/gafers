@@ -2,24 +2,23 @@
 	<div class="container-fluid">
 	<div class="row">
 		<div class="col-md-7 post">
-			{{#with post}}
 			<div class="row">
 				<div class="col-md-12 post-title full">
-					<span>{{title}}</span>
+					<span>{{post.title}}</span>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-12">
-					<div class="row video {{status}}">
+					<div class="row video {{post.status}}">
 						<div class="col-md-12">
-							{{#if active}}
+							{{#if post.active}}
 							<video width="100%" autoplay loop>
-								<source src="{{webm}}" type="video/webm">
-								<source src="{{mp4}}" type="video/mp4">
+								<source src="{{post.webm}}" type="video/webm">
+								<source src="{{post.mp4}}" type="video/mp4">
 							</video>
 							{{else}}
 							<img src="/css/icons/{{status}}.png" width=200>
-							<span>{{status}}</span>
+							<span>{{post.status}}</span>
 							{{/if}}
 						</div>
 					</div>
@@ -34,38 +33,38 @@
 					</div>
 				</div>
 			</div>
-			{{/with}}
 			<div class="row">
-				{{#with post}}
-				{{#with game}}
-				<h3>More from {{name}}</h3>
-				{{/with}}
-				{{/with}}
-				{{#with related}}
-					{{#each this}}
-					<div class="col-md-4 col-xs-4 .col-md-offset-4 post-thumb post-{{status}}">
-						<span class="title">{{title}}</span>
-						<a href="/gaf/{{url_key}}">
-							<img width="100%" src="https://thumbs.gfycat.com/{{file_name}}-thumb360.jpg" class="thumb">
+				<h3>More from {{post.game.name}}</h3>
+					{{#each related}}
+					<div class="col-md-4 col-xs-4 .col-md-offset-4 post-thumb post-{{this.status}}">
+						<span class="title">{{this.title}}</span>
+						<a href="/gaf/{{this.url_key}}">
+							<img width="100%" src="https://thumbs.gfycat.com/{{this.file_name}}-thumb360.jpg" class="thumb">
 						</a>
 					</div>
 					{{/each}}
-				{{/with}}
 			</div>
 		</div>
 		<div class="col-md-5">
 			<div class="row post-info">
 				<div class="col-md-12">
 					<div class="row">
-						{{#with post}}
 						<div class="col-md-4 post-stats">
-							<span class="post-points">{{points}}</span><span data-postid="{{id}}" class="glyphicon glyphicon-arrow-up post-vote {{voted}}"></span>
-							<span class="post-views">{{views}}<span class="glyphicon glyphicon-eye-open"></span></span>
+							<div class="row">
+								<div class="col-md-12">
+									<span class="post-points">{{post.points}}</span><span data-postid="{{post.id}}" class="glyphicon glyphicon-arrow-up post-vote {{post.voted}}"></span>
+									<span class="post-views">{{post.views}}<span class="glyphicon glyphicon-eye-open"></span></span>
+								</div>
+							</div>
+							<div class="row uploader">
+								<div class="col-md-12">
+									by {{#if post.user.username}}<a href="/user/{{post.user.username}}">{{post.user.username}}</a>{{else}}anonymous{{/if}}
+								</div>
+							</div>
 						</div>
 						<div class="col-md-8 post-game">
-							<span>{{#with game}} {{name}}{{/with}}</span>
+							<span>{{post.game.name}}</span>
 						</div>
-						{{/with}}
 					</div>
 					<div class="row">
 						<div class="col-md-6 post-social">

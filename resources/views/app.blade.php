@@ -5,18 +5,17 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Gafers</title>
+	<link rel="icon" type="image/png" href="/css/icons/favicon.png?a">
 
-
-	@if (isset($post))
+	<?php if (!empty($post)){ ?>
 	<meta property="og:title" content="{{$post->title}}" />
 	<meta property="og:site_name" content="Best gaming moments"/>
 	<meta property="og:url" content="https://dev.gafers.com/gaf/{{$post->url_key}}" />
-	<meta property="og:description" content="A place for all your gaming moments" />
+	<meta property="og:description" content="A <?=$post->category->name=='other'?'cool':$post->category->name?> moment in <?=$post->game->name?> at gafers.com" />
 	<meta property="fb:app_id" content="651453621654315" />
 	<meta property="og:type" content="article" />
 	<meta property="og:image" content="https://thumbs.gfycat.com/{{$post->file_name}}-thumb360.jpg" />
-
-	@endif
+	<?php } ?>
 
 	<link href="{{ secure_asset('/css/app.css') }}" rel="stylesheet">
 

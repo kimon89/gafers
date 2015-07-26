@@ -226,6 +226,7 @@ $(function(){
         },
         home:function(data,initial,callback){
             var _this = this;
+            _this.revertVoteTrigger();
             var initial = initial == undefined ? true : initial;
             var page = data.page ? data.page : 1;
             var type = data.type ? data.type : 'top';
@@ -243,6 +244,7 @@ $(function(){
                 var dataForTemplate = response.data;
                 dataForTemplate.featured.forEach(function(v,k){
                     v.postLocation = "https://"+base_url+"/gaf/"+v.url_key;
+                    v.game.url_name = encodeURIComponent(v.game.name);
                 });
                 if (initial) {
                     var html = _this.render("#homepage-template",dataForTemplate);
@@ -314,7 +316,7 @@ $(function(){
             }).done(function(response){
                 var videoPaused = false;
                 var dataForTemplate = response.data;
-                dataForTemplate.postLocation = window.location.pos;
+                dataForTemplate.postLocation = window.location;
                 var html = _this.render("#post-template",dataForTemplate);
                 _this.elements.gafPage = $(html);
                 $('.container.main').append(_this.elements.gafPage);
@@ -417,7 +419,7 @@ $(function(){
         },
         voteTrigger:function(){
             var _this = this;
-            $('body').on('click','.post-vote',function(el){          
+            $('body').on('click','.post-vote',function(){          
                     var el = $(this);
                     _this.getUserData(function(user){
                         if (user === false) {
@@ -434,7 +436,7 @@ $(function(){
                                 method:'POST',
                                 dataType:'json'
                             }).done(function(response){
-                                var postPointsEl = $('.post-points');
+                                var postPointsEl = el.parent().find('.post-points');
                                 var curPts = parseInt(postPointsEl.html());
                                 var newPts = el.hasClass('voted') ? curPts-1 : curPts+1 ;
                                 postPointsEl.html(newPts);
@@ -1122,7 +1124,7 @@ $(function(){
             });
 
             if (!_this.elList.category.find('.btn.active')[0]) {
-                _this.elList.category.find('.btn.category-win').addClass('active');
+                _this.elList.category.find('.btn.category-other').addClass('active');
             }
 
             $('.upload-progress').each(function(k,el){
