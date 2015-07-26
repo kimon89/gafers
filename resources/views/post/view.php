@@ -17,7 +17,7 @@
 								<source src="{{post.mp4}}" type="video/mp4">
 							</video>
 							{{else}}
-							<img src="/css/icons/{{status}}.png" width=200>
+							<img src="/css/icons/{{post.status}}.png" width=200>
 							<span>{{post.status}}</span>
 							{{/if}}
 						</div>
