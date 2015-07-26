@@ -23,12 +23,6 @@
 	  	<form id="settings-form" class="form-horizontal" role="form" method="POST" action="/user/settings">
 			<input id="token" type="hidden" name="_token" value="{{ csrf_token }}">
 			<div class="form-group">
-				<label for="avatar-input" class="col-md-2 control-label">Avatar</label>
-				<div class="col-md-4">
-					<img width=50 src="/css/icons/default_avatars/1.png">
-				</div>
-			</div>
-			<div class="form-group">
 				<label for="title-input" class="col-md-2 control-label">Username</label>
 				<div class="col-md-4">
 					<input id="title-input" type="text" class="form-control" name="username" value="{{username}}" >

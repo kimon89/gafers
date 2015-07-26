@@ -27,7 +27,7 @@
 							<div class="col-md-9">
 								<div class="row">
 									<div class="col-md-12">
-										<input id="title-input" type="text" class="form-control" name="title" value="{{ title }}" required>
+										<input id="title-input" type="text" class="form-control" placeholder="Think of a good title" name="title" value="{{ title }}" required>
 									</div>
 								</div>
 							</div>
@@ -37,7 +37,7 @@
 							<div class="col-md-7">
 								<div class="row">
 									<div class="col-md-11">
-									<input type="text" class="form-control" id="game-autocomplete" name="game" {{#if game}} value="{{game}}" disabled="true"{{/if}} required>
+									<input type="text" class="form-control" id="game-autocomplete" placeholder="Start typing a game" name="game" {{#if game}} value="{{game}}" disabled="true"{{/if}} required>
 									<input type="text" id="game-input" {{#if gameId}} value="{{gameId}}"{{/if}} name="game-input">
 									</div>
 									<span class="glyphicon glyphicon-remove-sign {{#if game}} {{else}} hidden{{/if}}" ></span>
@@ -71,11 +71,14 @@
 										</div>	
 									</div>
 									<div class="col-md-7 file-type">
-										<span class="file-name"></span>
-										<div class="upload-progress hidden"><div></div></div>
 										<input id="url-input" name="url" type="text" class="form-control hidden" value="{{url}}">
 										<input id="file-input" name="file" type="file" class="form-control hidden">	
-
+									</div>
+									<div class="col-md-7 upload-progress hidden">
+											<div class="filename"></div>
+											<div class="progress">
+												<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+											</div>
 									</div>
 								</div>
 								<div  class="row">
@@ -90,7 +93,7 @@
 			       		<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
 								<button type="submit" class="btn btn-primary submit" >
-									Create
+									Submit
 								</button>
 							</div>
 						</div>
