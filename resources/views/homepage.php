@@ -344,21 +344,30 @@ video{
   box-shadow: inset 0px 0px 2px rgb(182, 182, 182);
 }
 
-.upload-progress{
-	border: 1px solid rgb(204, 204, 204);
-  width: 100%;
-  height: 10px;
-  border-radius: 4px;
+.nav .upload-progress.done {
+	cursor: pointer;
 }
 
-.upload-progress > div{
-	width:0%;
-	height:100%;
-	  background-color: rgb(42, 197, 197);
+.nav .upload-progress > div {
+	width:100px;
+	padding-right:20px;
+	padding-top:10px;
+}
+.upload-progress .progress {
+	width:100%;
+	height:10px;
+	margin-bottom:0px;
 }
 
-.nav .upload-progress {
-	margin-top:-15px;
+.upload-progress .filename{
+	color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size:0.9em;
+}
+
+#post-form .upload-progress .filename{
+	color:black;
 }
 
 .nav li a {
