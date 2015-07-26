@@ -91,7 +91,7 @@ class AuthController extends Controller {
 			$response['data'] = Auth::user();
             return response()->json($response);
         } else {
-        	$response['email'] = 'Sorry, the member name and password you entered do not match. Please try again.';
+        	$response['email'] = 'Invalid email or password';
         	return response(json_encode($response), 401);
         }
 	}
