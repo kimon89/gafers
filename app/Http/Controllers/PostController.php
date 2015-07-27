@@ -97,10 +97,6 @@ class PostController extends Controller {
 			return response()->json(['success' => true,'data' => ['post'=>[],'related'=>[]]]);
 		}
 
-		//record the view
-		$post->views = $post->views+1;
-		$post->save();
-
 		//append if the user has voted
 		if (Auth::check()) {
 			$post->voted = PostService::hasUserVoted($post->id,Auth::user()->id) ? 'voted' : '';

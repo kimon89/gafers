@@ -19,6 +19,10 @@ class PostService {
 
 		if (Cache::has($cacheKey)) {
 			$post = Cache::get($cacheKey);
+			//record the view
+			$post->views = $post->views+1;
+			$post->save();
+			Cache::put($cacheKey,$post,$cacheTtl);
 		} else {
 			$post = Post::where('url_key','=',$key)->with(['game','category','user'])->first();
 			if (empty($post)) {
@@ -27,6 +31,9 @@ class PostService {
 			if ($post->status != 'active') {
 				$cacheTtl = 1;
 			}
+			//record the view
+			$post->views = $post->views+1;
+			$a =$post->save();
 			Cache::put($cacheKey,$post,$cacheTtl);
 		}
 		

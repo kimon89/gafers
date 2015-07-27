@@ -124,6 +124,8 @@ $(function(){
                 $('.nav li.'+navClass).addClass('active');
             }
 
+            ga('send', 'pageview');
+            
             _this[functionName](data);
         },
         getUserData:function(callback){
