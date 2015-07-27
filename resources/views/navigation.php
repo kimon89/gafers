@@ -15,7 +15,7 @@
 					<span class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="/">
-					<div>GAFERS</div>	<img src="/css/icons/logo-tv-trans.png" width=32>
+					<div>GAFERS</div>	<img src="/css/icons/logo-tv-pac-yellow.png" width=32>
 				</a>
 				</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -24,10 +24,10 @@
 					<li class="recent"><a href="/recent">Recent</a></li>
 					<li class="category-win"><a href="/category/win">Wins</a></li>
 					<li class="category-fail"><a href="/category/fail">Fails</a></li>
-					<li class="game game-dota-2"><a href="/game/DotA%202">DoTA 2</a></li>
-					<li class="game game-league-of-legends"><a href="/game/League%20of%20Legends">LoL</a></li>
-					<li class="game game-grand-theft-auto-v"><a href="/game/Grand%20Theft%20Auto%20V">GTA5</a></li>
-					<li>
+					<li class="vhidden-md hidden-sm hidden-xs game game-dota-2"><a href="/game/DotA%202">DoTA 2</a></li>
+					<li class="hidden-md hidden-sm hidden-xs game game-league-of-legends"><a href="/game/League%20of%20Legends">LoL</a></li>
+					<li class="hidden-md hidden-sm hidden-xs game game-grand-theft-auto-v"><a href="/game/Grand%20Theft%20Auto%20V">GTA5</a></li>
+					<li class="hidden-sm hidden-xs">
 					<form class="navbar-form navbar-left" role="search">
 				        <div class="form-group">
 				          <input type="text" class="form-control" placeholder="Search for a game">
