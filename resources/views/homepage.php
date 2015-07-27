@@ -64,10 +64,23 @@
 <script id="homepage-posts" type="text/x-handlebars-template">
 {{#each posts}}
 <div class="col-md-12 col-xs-12 post-thumb post-{{status}}">
-	<span class="title">{{title}}</span>
-	<a href="/gaf/{{url_key}}">
-		<img width="100%" src="https://thumbs.gfycat.com/{{file_name}}-thumb360.jpg" class="thumb">
-	</a>
+	<div class="row">
+		<div class="col-md-12">
+			<span class="title">{{title}}</span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<a href="/gaf/{{url_key}}">
+				<img width="100%" src="https://thumbs.gfycat.com/{{file_name}}-thumb360.jpg" class="thumb">
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 uploader">
+			in <a href="/game/{{game.url_name}}">{{game.name}}</a> by {{#if user.username}}<a href="/user/{{user.username}}">{{user.username}}</a>{{else}}anonymous{{/if}}
+		</div>
+	</div>
 </div>
 {{/each}}
 </script>

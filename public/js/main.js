@@ -252,6 +252,9 @@ if(/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine
                     v.postLocation = "https://"+base_url+"/gaf/"+v.url_key;
                     v.game.url_name = encodeURIComponent(v.game.name);
                 });
+                dataForTemplate.posts.forEach(function(v,k){
+                    v.game.url_name = encodeURIComponent(v.game.name);
+                });
                 if (initial) {
                     var html = _this.render("#homepage-template",dataForTemplate);
                     _this.elements.homePage = $(html);

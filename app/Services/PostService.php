@@ -112,7 +112,7 @@ class PostService {
 			'posts'		=> []
 		];
 		$data['featured'] = Post::where('status','=','active')->with(['game','category','commentsCount','user'])->limit($limit)->offset($offsetFeatured)->orderBy('points','desc')->get();
-		$data['posts'] = Post::where('status','=','active')->with(['game','category'])->limit($limitPosts)->offset($offsetPosts)->orderBy('id','desc')->get();
+		$data['posts'] = Post::where('status','=','active')->with(['game','category','user'])->limit($limitPosts)->offset($offsetPosts)->orderBy('id','desc')->get();
 		
 		foreach($data['featured'] as &$post) {
 			if (Auth::check()) {
