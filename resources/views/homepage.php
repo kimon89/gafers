@@ -32,13 +32,13 @@
 		<div class="row">
 			<div class="col-md-12">
 				{{#if ../isMobile}}
-				<video {{#if last}} data-last="true" {{/if}} width="100%" loop controls preload poster="https://thumbs.gfycat.com/{{file_name}}-thumb360.jpg">
+				<video {{#if last}} data-last="true" {{/if}} width="100%" loop controls  poster="https://thumbs.gfycat.com/{{file_name}}-thumb360.jpg">
 						<source src="{{webm}}" type="video/webm">
 						<source src="{{mp4}}" type="video/mp4">
 					</video>
 				{{else}}
 				<a href="/gaf/{{url_key}}">
-					<video {{#if last}} data-last="true" {{/if}} width="100%" preload loop>
+					<video {{#if last}} data-last="true" {{/if}} width="100%"  loop>
 						<source src="{{webm}}" type="video/webm">
 						<source src="{{mp4}}" type="video/mp4">
 					</video>
