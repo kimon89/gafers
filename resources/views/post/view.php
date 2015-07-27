@@ -3,8 +3,12 @@
 	<div class="row">
 		<div class="col-md-7 post">
 			<div class="row">
-				<div class="col-md-12 post-title full">
+				<div class="col-md-10 post-title full">
 					<span>{{post.title}}</span>
+				</div>
+				<div class="col-md-2 ">
+					<span data-postid="{{post.id}}" class="glyphicon glyphicon-arrow-up post-vote {{post.voted}}"></span>
+					<span class="post-points">{{post.points}}<span>			
 				</div>
 			</div>
 			<div class="row">
@@ -12,16 +16,26 @@
 					<div class="row video {{post.status}}">
 						<div class="col-md-12">
 							{{#if post.active}}
-							<video width="100%" autoplay loop>
-								<source src="{{post.webm}}" type="video/webm">
-								<source src="{{post.mp4}}" type="video/mp4">
-							</video>
+								{{#if isMobile}}
+								<video width="100%" autoplay controls loop poster="https://thumbs.gfycat.com/{{post.file_name}}-thumb360.jpg">
+									<source src="{{post.webm}}" type="video/webm">
+									<source src="{{post.mp4}}" type="video/mp4">
+								</video>
+								{{else}}
+								<video width="100%" autoplay loop>
+									<source src="{{post.webm}}" type="video/webm">
+									<source src="{{post.mp4}}" type="video/mp4">
+								</video>
+								{{/if}}
 							{{else}}
 							<img src="/css/icons/{{post.status}}.png" width=200>
 							<span>{{post.status}}</span>
 							{{/if}}
 						</div>
 					</div>
+					{{#if isMobile}}
+					
+					{{else}}
 					<div class="row controls">
 						<div class="col-md-12">
 							<div id='seekBar' value='0'>
@@ -29,8 +43,10 @@
 							</div>
 							<span class="glyphicon glyphicon-pause video-pause"></span>
 							<span class="video-time"></span>
+							<span class="glyphicon glyphicon-resize-full"></span>
 						</div>	
 					</div>
+					{{/if}}
 				</div>
 			</div>
 			<div class="row">
@@ -52,8 +68,7 @@
 						<div class="col-md-4 post-stats">
 							<div class="row">
 								<div class="col-md-12">
-									<span class="post-points">{{post.points}}</span><span data-postid="{{post.id}}" class="glyphicon glyphicon-arrow-up post-vote {{post.voted}}"></span>
-									<span class="post-views">{{post.views}}<span class="glyphicon glyphicon-eye-open"></span></span>
+									<span class="post-views">{{post.views}} views</span>
 								</div>
 							</div>
 							<div class="row uploader">
@@ -67,9 +82,9 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-6 post-social">
-							<a class="btn btn-social-icon btn-s btn-facebook" data-ignore="true" href="https://www.facebook.com/sharer/sharer.php?u={{postLocation}}" target="_blank"><i class="fa fa-facebook"></i></a>
-							<a class="btn btn-social-icon btn-s btn-reddit" data-ignore="true" href="//www.reddit.com/submit" onclick="window.location = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false" target="_blank"><i class="fa fa-reddit"></i></a>
+						<div class="col-md-12 post-social">
+							<a class="btn btn-social-icon btn-xs btn-facebook" data-ignore="true" href="https://www.facebook.com/sharer/sharer.php?u={{postLocation}}" target="_blank"><i class="fa fa-facebook"></i></a>
+							<a class="btn btn-social-icon btn-xs btn-reddit" data-ignore="true" href="//www.reddit.com/submit" onclick="window.location = '//www.reddit.com/submit?url=' + encodeURIComponent(window.location); return false" target="_blank"><i class="fa fa-reddit"></i></a>
 						</div>
 					</div>
 				</div>
