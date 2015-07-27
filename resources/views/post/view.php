@@ -17,12 +17,12 @@
 						<div class="col-md-12">
 							{{#if post.active}}
 								{{#if isMobile}}
-								<video width="100%" autoplay controls loop poster="https://thumbs.gfycat.com/{{post.file_name}}-thumb360.jpg">
+								<video width="100%" autoplay controls loop preload poster="https://thumbs.gfycat.com/{{post.file_name}}-thumb360.jpg">
 									<source src="{{post.webm}}" type="video/webm">
 									<source src="{{post.mp4}}" type="video/mp4">
 								</video>
 								{{else}}
-								<video width="100%" autoplay loop>
+								<video width="100%" autoplay loop preload>
 									<source src="{{post.webm}}" type="video/webm">
 									<source src="{{post.mp4}}" type="video/mp4">
 								</video>
