@@ -15,7 +15,7 @@ class PostService {
 	static function getPostByKey($key)
 	{
 		$cacheKey = 'post:'.$key;
-		$cacheTtl = 5;
+		$cacheTtl = 1;
 
 		if (Cache::has($cacheKey)) {
 			$post = Cache::get($cacheKey);
@@ -28,9 +28,7 @@ class PostService {
 			if (empty($post)) {
 				return null;
 			}
-			if ($post->status != 'active') {
-				$cacheTtl = 1;
-			}
+			
 			//record the view
 			$post->views = $post->views+1;
 			$a =$post->save();
