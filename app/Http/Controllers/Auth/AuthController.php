@@ -62,7 +62,7 @@ class AuthController extends Controller {
 			'default_avatar' => rand(1,4),
 		]);
 
-		$response = new \stdClass();
+		$response = [];
 		if ($user) {
 			Auth::login($user);
 
@@ -72,11 +72,11 @@ class AuthController extends Controller {
 			    $message->to($input['email'], $input['username'])->subject('Welcome!');
 			});
 
-			$response->success = true;
-			$response->data = $user;
+			$response['success'] = true;
+			$response['data'] = $user;
 		} else {
-			$response->success = false;
-			$response->data = null;
+			$response['success'] = false;
+			$response['data'] = null;
 		}
 		
 		return response()->json($response);

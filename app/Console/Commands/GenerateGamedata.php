@@ -40,21 +40,23 @@ class GenerateGamedata extends Command {
         {   
             $all_games_db = Game::all()->toArray();
          
+            //game aliases
             $aliases = [
                 'gta' => 'grand theft auto',
                 'lol' => 'league of legends'
             ];
 
-            $main_obj = new \StdClass();
-            $main_obj->suggestions = [];
+            $main_obj = [];
+            $main_obj['suggestions'] = [];
 
             foreach ($all_games_db as $game_data) {
-               $game = new \StdClass();
-               $game->data = $game_data['id'];
-               $game->value = $game_data['name'];
-               $main_obj->suggestions[] = $game;
+               $game = [];
+               $game['data'] = $game_data['id'];
+               $game['value'] = $game_data['name'];
+               $main_obj['suggestions'][] = $game;
             }
             $main_obj->aliases = $aliases;
+            //create the json file
             file_put_contents('public/gamedata.json',json_encode($main_obj));
             $this->info('gamedata.json done');
         }
