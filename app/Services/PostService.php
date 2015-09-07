@@ -11,7 +11,11 @@ use App\Services\CategoryService;
 
 class PostService {
 
-
+	/**
+	 * Returns a post based on the url key
+	 * @param  string $key The url key
+	 * @return post      The post object
+	 */
 	static function getPostByKey($key)
 	{
 		$cacheKey = 'post:'.$key;
@@ -38,6 +42,13 @@ class PostService {
 		return $post;
 	}
 
+	/**
+	 * Return posts that belong to a spesific game
+	 * @param  integer  $gameId [description]
+	 * @param  array   $notIn  [description]
+	 * @param  integer $limit  [description]
+	 * @return [type]          [description]
+	 */
 	static function getPostsByGame($gameId,$notIn = [],$limit = 5)
 	{
 		$cacheKey = 'posts:game'.$gameId.json_encode($notIn);
